@@ -1,0 +1,178 @@
+#{extends 'standardForm.html' /}
+#{set title:'Preduzeca' /}
+
+
+
+<script>
+
+
+
+function sync(item){
+	naziv = item.find(".naziv").html()
+	adresaPreduzeca = item.find(".adresaPreduzeca").html()
+	pib = item.find(".pib").html()
+	telefon = item.find(".telefon").html()
+	email = item.find(".email").html()
+	logo = item.find(".logo").html()
+	mesto = item.find(".mesto").html()
+    id = item.find(".id").html()
+    $("#naziv").val(naziv);
+	$("#adresaPreduzeca").val(adresaPreduzeca);
+	$("#pib").val(pib);
+	$("#telefon").val(telefon);
+	$("#email").val(email);
+	$("#logo").val(logo);
+	$("#mesto").val(mesto);
+    $("#id").val(id);
+}
+
+
+
+
+
+function remove(id){
+	$(location).attr('href', '/Preduzeca/delete?id='+id);
+}
+</script>
+
+<p>
+<ul>
+  <li><a href="@{Preduzeca.showPreduzeca("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{Preduzeca.showPreduzeca("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a  id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a  id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a  id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a  id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{Preduzeca.showPreduzeca("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  
+</ul>
+</p>
+
+
+<h1>Preduzeca</h1>
+<table>
+	<tr class = "header">
+	   <th>Naziv</th>
+	   <th>adresaPreduzeca</th> 
+	   <th>pib</th> 
+	   <th>telefon</th> 
+	   <th>email</th> 
+	   <th>logo</th> 
+	   <th>mesto</th>  
+	   
+	</tr>
+#{list items:preduzeca, as:'preduzece'}
+	<tr>
+		<td class = "naziv">${preduzece.naziv}</td>
+		<td class = "adresaPreduzeca">${preduzece.adresaPreduzeca}</td>
+		<td class = "pib">${preduzece.pib}</td>
+		<td class = "telefon">${preduzece.telefon}</td>
+		<td class = "email">${preduzece.email}</td>
+		<td class = "logo">${preduzece.logo}</td>
+		<td class = "mesto">#{if preduzece.mesto}${preduzece.mesto.nazivMesta}#{/if}</td>
+		
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${preduzece.id}</td>
+	</tr>
+#{/list}
+</table>
+
+#{set 'action'}
+
+	#{if mode == 'add'}
+		@{Preduzeca.create()}
+	#{/if}
+	
+	#{elseif mode == 'edit'}
+        @{Preduzeca.edit()}
+    #{/elseif}
+    
+ 
+   
+ #{/set}
+
+
+
+
+
+<div class = "panel">
+	<p>
+	
+		<form action=${action} method="post">
+		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'naziv'}
+					<label for = "${field.id}">naziv</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				
+				
+				<p>
+				#{field 'adresaPreduzeca'}
+					<label for = "${field.id}">adresaPreduzeca</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'pib'}
+					<label for = "${field.id}">pib</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'telefon'}
+					<label for = "${field.id}">telefon</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'email'}
+					<label for = "${field.id}">email</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'logo'}
+					<label for = "${field.id}">logo</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+			
+				
+				
+				
+				<p>
+				#{field 'mesto'}
+					<label for = "${field.id}">Mesto</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:mesta, as:'mesto'}
+					<option value = "${mesto.id}">${mesto.nazivMesta}</option>
+					#{/list}
+					</select>
+					
+				#{/}
+				</p>
+				
+				
+				
+				
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{Preduzeca.showPreduzeca("")}" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>
+	</p>
+</div>
+
+
+

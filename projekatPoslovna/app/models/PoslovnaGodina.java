@@ -11,8 +11,7 @@ import play.db.jpa.Model;
 @Entity
 public class PoslovnaGodina extends Model {
 	
-	@Column(unique=true, length=6)
-	public String poslovnaGodinaID;
+
 	
 	@Column(length=4)
 	public Integer godina;

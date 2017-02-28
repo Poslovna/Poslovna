@@ -1,0 +1,98 @@
+#{extends 'standardForm.html' /}
+#{set title:'Mesta' /}
+
+
+
+<script>
+
+function sync(item){
+	nazivMesta = item.find(".nazivMesta").html()
+    id = item.find(".id").html()
+    $("#nazivMesta").val(nazivMesta);
+    $("#id").val(id);
+}
+
+
+function remove(id){
+	$(location).attr('href', '/Mesta/delete?id='+id);
+}
+
+</script>
+
+<p>
+<ul>
+  <li><a href="@{Mesta.showMesta("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{Mesta.showMesta("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a  id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a  id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a  id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a  id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{Mesta.showMesta("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  
+</ul>
+</p>
+
+
+
+<div class = "container-fluid">
+<h1>Mesta</h1>
+
+<table>
+	<tr class = "header">
+	   <th>Mesta</th> 
+	   
+	</tr>
+#{list items:mesta, as:'mesto'}
+	<tr>
+		<td class = "nazivMesta">${mesto.nazivMesta}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${mesto.id}</td>
+	</tr>
+#{/list}
+</table>
+
+
+#{set 'action'}
+
+	#{if mode == 'add'}
+		@{Mesta.create()}
+	#{/if}
+	#{elseif mode == 'edit'}
+		 @{Mesta.edit()}
+ 	#{/elseif}
+ 
+ 	#{else}
+ 		@{Mesta.filter()}
+	 #{/else}
+ #{/set}
+
+
+<div class = "panel">
+	<p>
+	
+		<form action=${action} method="post">
+		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'nazivMesta'}
+					<label for = "${field.id}">naziv mesta</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{Mesta.showMesta("")}" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>
+	</p>
+</div>
+</div>
+

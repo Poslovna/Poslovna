@@ -4,15 +4,16 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import play.db.jpa.Model;
 
+@Entity
 public class Otpremnica extends Model  {
 	
-	@Column(unique=true, length=6)
-	public Integer idOtpremnice;
+
 	
 	@Column(unique=true, length=6)
 	public Integer brojOtpremnice;

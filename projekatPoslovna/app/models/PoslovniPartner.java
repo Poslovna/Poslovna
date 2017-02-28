@@ -3,16 +3,16 @@ package models;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import play.db.jpa.Model;
 
+@Entity
 public class PoslovniPartner extends Model {
 	
-	@Column(unique=true, length=6) 
-	public Integer idPartnera;
-	
+
 	@Column(length=40)
 	public String nazivPartnera;
 	

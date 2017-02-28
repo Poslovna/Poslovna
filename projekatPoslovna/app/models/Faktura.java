@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.geometry.Pos;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -15,10 +16,10 @@ import play.data.validation.Max;
 import play.data.validation.Min;
 import play.db.jpa.Model;
 
+@Entity
 public class Faktura extends Model {
 	
-	@Column(unique=true, length=6) 
-	public Integer idFakture;
+
 		
 	@Column(unique=true, length=6) 
 	public Integer brojFakture;
