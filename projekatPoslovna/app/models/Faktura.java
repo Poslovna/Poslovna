@@ -1,6 +1,6 @@
 package models;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import javafx.geometry.Pos;
@@ -36,22 +36,22 @@ public class Faktura extends Model {
 	@Column(length=40)
 	public Date datumObracuna;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	@Max(15)
 	@Min(2)
 	public Double ukupnoRobaIUsluga;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	@Max(15)
 	@Min(2)
 	public Double ukupanRabat;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	@Max(15)
 	@Min(2)
 	public Double ukupanPorez;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	@Max(15)
 	@Min(2)
 	public Double iznosFakture;
