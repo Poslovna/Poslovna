@@ -19,6 +19,13 @@ public class PoslovnaGodina extends Model {
 	@Column(nullable=false)
 	public Boolean zakljucena;
 	
+//	if(zakljucena == true){
+//		String zakljucena2 = "da";
+//	}else{
+//		String zakljucena2 = "ne";
+//	}
+
+	
 	@OneToMany(mappedBy="poslovnaGodina")
 	public List<Faktura> fakture;
 	
@@ -29,5 +36,5 @@ public class PoslovnaGodina extends Model {
 	public List<Narudzba> narudzba;
 
 	
-	
 }
+
