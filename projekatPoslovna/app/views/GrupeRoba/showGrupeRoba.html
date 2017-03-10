@@ -1,0 +1,127 @@
+#{extends 'standardForm.html' /}
+#{set title:'Grupe roba' /}
+
+
+<script>
+
+
+function sync(item){
+	nazivGrupe = item.find(".nazivGrupe").html()
+    
+    id = item.find(".id").html()
+    $("#nazivGrupe").val(nazivGrupe);
+   
+    $("#id").val(id);
+}
+
+
+
+
+</script>
+
+
+<p>
+<ul>
+  <li><a href="@{GrupeRoba.showGrupeRoba("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{GrupeRoba.showGrupeRoba("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a  id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a  id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a  id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a  id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{GrupeRoba.showGrupeRoba("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  
+</ul>
+</p>
+
+
+
+#{set 'action'}
+
+	#{if mode == 'add'}
+		@{GrupeRoba.create()}
+	#{/if}
+	#{elseif mode == 'edit'}
+		 @{GrupeRoba.edit()}
+ 	#{/elseif}
+ 	#{else}
+ 		@{GrupeRoba.filter()}
+	 #{/else}	
+ #{/set}
+
+
+
+<h1>Fakturisanje</h1>
+
+
+
+
+<table>
+	<tr class = "header">
+	   <th>Naziv</th> 
+	   <th>PDV</th>
+	   <th>Preduzece</th>
+	</tr>
+#{list items:GrupeRoba, as:'GrupaRobe'}
+	<tr>
+		<td class = "nazivGrupe">${grupaRobe.nazivGrupe}</td>
+	
+		
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${ObracunatiPorezi.id}</td>
+	</tr>
+#{/list}
+</table>
+
+
+<div class = "panel">
+	<p>
+	
+		<form action=${action} method="post">
+		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'nazivGrupe'}
+					<label for = "${field.id}">NazivGrupe</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'PDV'}
+					<label for = "${field.id}">PDV</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:PDV, as:'PDV'}
+					<option  value = "${PDV.id}">${PDV.nazivPDV}</option>
+					#{/list}
+					</select>
+					
+				#{/}
+				<p>
+				#{field 'preduzece'}
+					<label for = "${field.id}">Preduzece</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:Preduzeca, as:'Preduzece'}
+					<option  value = "${preduzece.id}">${preduzece.naziv}</option>
+					#{/list}
+					</select>
+					
+				#{/}
+				
+				
+				</p>
+				
+				</p>
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "#" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>
+	</p>
+</div>

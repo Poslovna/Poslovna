@@ -1,0 +1,136 @@
+#{extends 'standardForm.html' /}
+#{set title:'Obracunati Porezi' /}
+
+
+<script>
+
+
+function sync(item){
+	stopa = item.find(".stopa").html()
+    iznos = item.find(".iznos").html()
+   // preduzece = item.find(".preduzece").html()
+    id = item.find(".id").html()
+    $("#stopa").val(stopa);
+    $("#iznos").val(iznos);
+    //$("#preduzece").val(preduzece);
+    $("#id").val(id);
+}
+
+
+
+
+</script>
+
+
+<p>
+<ul>
+  <li><a href="@{ObracunatiPorezi.showObracunatiPorezi("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{ObracunatiPorezi.showObracunatiPorezi("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a  id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a  id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a  id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a  id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{ObracunatiPorezi.showObracunatiPorezi("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  
+</ul>
+</p>
+
+
+
+#{set 'action'}
+
+	#{if mode == 'add'}
+		@{ObracunatiPorezi.create()}
+	#{/if}
+	#{elseif mode == 'edit'}
+		 @{ObracunatiPorezi.edit()}
+ 	#{/elseif}
+ 	#{else}
+ 		@{ObracunatiPorezi.filter()}
+	 #{/else}	
+ #{/set}
+
+
+
+<h1>Fakturisanje</h1>
+
+
+
+
+<table>
+	<tr class = "header">
+	   <th>Stopa</th> 
+	   <th>Iznos</th>
+	   <th>Faktura</th>
+	   <th>Porez</th>
+	</tr>
+#{list items:ObracunatiPorezi, as:'models.ObracunatiPorezi'}
+	<tr>
+		<td class = "rbrCenovnika">${cenovnik.rbrCenovnika}</td>
+		<td class = "datmPrimene">${cenovnik.datmPrimene}</td>
+	
+		
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${ObracunatiPorezi.id}</td>
+	</tr>
+#{/list}
+</table>
+
+
+<div class = "panel">
+	<p>
+	
+		<form action=${action} method="post">
+		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'stopa'}
+					<label for = "${field.id}">Stopa</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'iznos'}
+					<label for = "${field.id}">Iznos</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'faktura'}
+					<label for = "${field.id}">Faktura</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:Fakture, as:'Faktura'}
+					<option  value = "${faktura	.id}">${Faktura.brojFakture}</option>
+					#{/list}
+					</select>
+					
+				#{/}
+				<p>
+				#{field 'porez'}
+					<label for = "${field.id}">Porez</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:Porezi, as:'Porez'}
+					<option  value = "${porez.id}">${porez.nazivPoreza}</option>
+					#{/list}
+					</select>
+					
+				#{/}
+				
+				
+				</p>
+				
+				</p>
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "#" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>
+	</p>
+</div>
