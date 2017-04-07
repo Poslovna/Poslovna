@@ -21,6 +21,11 @@ public class PDV extends Model{
 	
 	@OneToMany(mappedBy="pdv")
 	public List<GrupaRobe> grupaRobe;
+
+	public PDV(String nazivPDV) {
+		super();
+		this.nazivPDV = nazivPDV;
+	}
 	
 	
 

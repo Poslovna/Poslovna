@@ -19,7 +19,7 @@ public class StopaPDVa extends Model{
 	public Double procenat;
 	
 	@Column(length=30)
-	public Date datumVazenja;
+	public String datumVazenja;
 	
 	@ManyToOne
 	public PDV pdv;

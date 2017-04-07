@@ -19,6 +19,7 @@ public class PoreskaStopa extends Model {
 	@ManyToOne
 	public Porez porez;
 	
+	
 	@ManyToOne
 	public IstorijaPoreza istorijaPoreza;
 
