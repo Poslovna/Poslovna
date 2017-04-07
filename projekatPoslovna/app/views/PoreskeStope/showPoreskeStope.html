@@ -1,0 +1,123 @@
+#{extends 'standardForm.html' /}
+#{set title:'Poreska stopa' /}
+
+<script>
+
+function sync(item){
+	iznosStope = item.find(".iznosStope").html()
+    porez = item.find(".porez").html()
+	istorijaPoreza = item.find(".istorijaPoreza").html()
+    id = item.find(".id").html()
+    $("#iznosStope").val(iznosStope);
+	$("#porez ").val(porez);
+	$("#istorijaPoreza ").val(istorijaPoreza);
+    $("#id").val(id);
+}
+    
+function remove(id){
+	$(location).attr('href', '/PoreskeStope/delete?id='+id);
+}
+	
+</script>
+
+<p>
+<ul>
+  <li><a href="http://localhost:9000" id="pickup"><img src="@{'/public/images/home.png'}"/></a></li>
+
+<li><a href="@{PoreskeStope.showPoreskeStope("filter")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+<li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="@{PoreskeStope.showPoreskeStope("")}" id= "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a  id= "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a  id= "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a  id= "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a  id= "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{PoreskeStope.showPoreskeStope("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id="remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+</ul>
+</p>
+
+
+<h1>Poreske stope</h1>
+
+<table>
+	<tr class = "header">
+	   <th>iznos stope</th>
+	   <th>porez</th>
+	   <th>istorija poreza</th>
+	</tr>
+#{list items:poreskeStope, as:'poreskaStopa'}
+
+	<tr>
+		<td class = "iznosStope">${poreskaStopa.iznosStope}</td>
+		<td class = "porez">#{if poreskaStopa.porez}${poreskaStopa.porez.nazivPoreza}#{/if}</td>
+		<td class = "istorijaPoreza">#{if poreskaStopa.istorijaPoreza}${poreskaStopa.istorijaPoreza.idIPoreza}#{/if}</td>	
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${poreskaStopa.id}</td>
+	</tr>
+
+#{/list}
+</table>
+
+#{set 'action'}
+	#{if mode == 'add'}
+		@{PoreskeStope.create()}
+	#{/if}
+	
+	#{elseif mode == 'edit'}
+		@{PoreskeStope.edit()}
+	#{/elseif}
+	
+	#{elseif mode == 'remove'}
+		@{PoreskeStope.delete()}
+	#{/elseif}
+	#{else}
+ 		@{PoreskeStope.filter()}
+	 #{/else}
+#{/set}
+
+
+
+<div class = "panel">
+	<p>
+		<form action=${action} method="post">		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				
+				<p>
+				#{field 'iznosStope'}
+					<label for = "${field.id}">iznos stope</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				
+				</p>
+				<p>
+				#{field 'porez'}
+					<label for = "${field.id}">porez</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:porezi, as:'porez'}
+					<option value = "${porez.id}">${porez.nazivPoreza}</option>
+					#{/list}
+					</select>
+					#{/}
+				</p>
+				<p>
+				#{field 'istorijaPoreza'}
+					<label for = "${field.id}">istorija poreza</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:istorijePoreza, as:'istorijaPoreza'}
+					<option value = "${istorijaPoreza.id}">${istorijaPoreza.idIPoreza}</option>
+					#{/list}
+					</select>
+					#{/}
+				</p>
+
+				
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{PoreskeStope.showPoreskeStope("")}" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>	
+	</p>
+</div>
