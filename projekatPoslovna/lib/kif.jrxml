@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="kif" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="81061993-8953-442a-8ef0-a56479ddf71f">
+	<property name="ireport.zoom" value="1.2100000000000024"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="datumPocetka" class="java.util.Date"/>
+	<parameter name="datumZavrsetka" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT
+     Faktura."id" AS Faktura_id,
+     Faktura."brojFakture" AS Faktura_brojFakture,
+     Faktura."iznosZaPlacanje" AS Faktura_iznosZaPlacanje,
+     Faktura."osnovica" AS Faktura_osnovica,
+     Faktura."ukupanPDV" AS Faktura_ukupanPDV,
+     Faktura."poslovnaGodina_id" AS Faktura_poslovnaGodina_id,
+     Faktura."poslovniPartner_id" AS Faktura_poslovniPartner_id,
+     Faktura."preduzece_id" AS Faktura_preduzece_id,
+     PoslovniPartner."id" AS PoslovniPartner_id,
+     PoslovniPartner."nazivPartnera" AS PoslovniPartner_nazivPartnera,
+     PoslovnaGodina."id" AS PoslovnaGodina_id,
+     PoslovnaGodina."godina" AS PoslovnaGodina_godina,
+     PoslovniPartner."adresa" AS PoslovniPartner_adresa,
+     PoslovnaGodina."zakljucena" AS PoslovnaGodina_zakljucena
+FROM
+     "dbo"."PoslovniPartner" PoslovniPartner INNER JOIN "dbo"."Faktura" Faktura ON PoslovniPartner."id" = Faktura."poslovniPartner_id"
+     INNER JOIN "dbo"."PoslovnaGodina" PoslovnaGodina ON Faktura."poslovnaGodina_id" = PoslovnaGodina."id"]]>
+	</queryString>
+	<field name="Faktura_id" class="java.lang.Long"/>
+	<field name="Faktura_brojFakture" class="java.lang.Integer"/>
+	<field name="Faktura_iznosZaPlacanje" class="java.lang.Double"/>
+	<field name="Faktura_osnovica" class="java.lang.Double"/>
+	<field name="Faktura_ukupanPDV" class="java.lang.Double"/>
+	<field name="Faktura_poslovnaGodina_id" class="java.lang.Long"/>
+	<field name="Faktura_poslovniPartner_id" class="java.lang.Long"/>
+	<field name="Faktura_preduzece_id" class="java.lang.Long"/>
+	<field name="PoslovniPartner_id" class="java.lang.Long"/>
+	<field name="PoslovniPartner_nazivPartnera" class="java.lang.String"/>
+	<field name="PoslovnaGodina_id" class="java.lang.Long"/>
+	<field name="PoslovnaGodina_godina" class="java.lang.Integer"/>
+	<field name="PoslovniPartner_adresa" class="java.lang.String"/>
+	<variable name="ukupnoOsnovica" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{Faktura_osnovica}]]></variableExpression>
+	</variable>
+	<variable name="ukupanPDV" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{Faktura_ukupanPDV}]]></variableExpression>
+	</variable>
+	<variable name="ukupanIznos" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{Faktura_iznosZaPlacanje}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="218" splitType="Stretch">
+			<staticText>
+				<reportElement x="59" y="16" width="433" height="51" uuid="ac23b156-39ef-482d-8880-eb9620cfaa65"/>
+				<textElement textAlignment="Center">
+					<font size="36" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dnevnik izlaznih faktura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="168" y="89" width="35" height="20" uuid="f9577338-786b-46ed-a674-d2e12ab3d9b3"/>
+				<text><![CDATA[Od:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="168" y="123" width="35" height="20" uuid="dc033b45-e139-425a-853d-365a9ac25499"/>
+				<text><![CDATA[Do:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="192" width="59" height="20" uuid="2de378f3-f993-4dcf-8b38-9fc5721f809f"/>
+				<text><![CDATA[Br. fakture]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="338" y="193" width="100" height="20" uuid="37d3b64a-2535-4b94-b4c0-5231a3aae289"/>
+				<text><![CDATA[Ukupan PDV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="259" y="192" width="79" height="20" uuid="42592386-3b14-44c3-8a2e-2383e8bc55a0"/>
+				<text><![CDATA[Osnovica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="438" y="192" width="100" height="20" uuid="9c0f7bf0-27fc-445c-9131-649cfab065f9"/>
+				<text><![CDATA[Iznos za placanje]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="59" y="192" width="100" height="20" uuid="4b115822-9761-4ac3-976c-9ad4d90b4612"/>
+				<text><![CDATA[Poslovna godina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="159" y="192" width="100" height="20" uuid="92619f0b-b844-4bd4-a4a8-c94efa0db042"/>
+				<text><![CDATA[Poslovni partner]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="238" y="89" width="100" height="20" uuid="6d5072c1-9768-469f-8d70-221d6e543b48"/>
+				<textFieldExpression><![CDATA[$P{datumPocetka}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="238" y="123" width="100" height="20" uuid="f7c4541d-58dc-4348-ac2e-0135afdcd9ee"/>
+				<textFieldExpression><![CDATA[$P{datumZavrsetka}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="212" width="555" height="1" uuid="5bcba8b4-fdeb-4f72-9dff-dfa4ec849c7d"/>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="56" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="59" height="20" uuid="f8a9bb07-8301-4406-ac33-0cd5eac58bea"/>
+				<textFieldExpression><![CDATA[$F{Faktura_brojFakture}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="259" y="0" width="79" height="20" uuid="57c3748d-570f-4963-a091-777e1077526d"/>
+				<textFieldExpression><![CDATA[$F{Faktura_osnovica}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="438" y="0" width="100" height="20" uuid="3ab61171-648c-417b-99ba-e69b4f35efee"/>
+				<textFieldExpression><![CDATA[$F{Faktura_iznosZaPlacanje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="159" y="0" width="100" height="20" uuid="521ece75-43f8-4fdf-959b-58f846c36a46"/>
+				<textFieldExpression><![CDATA[$F{PoslovniPartner_nazivPartnera}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="338" y="0" width="100" height="20" uuid="159a04f6-73c2-41d6-96c2-25e35aecff95"/>
+				<textFieldExpression><![CDATA[$F{Faktura_ukupanPDV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="59" y="0" width="100" height="20" uuid="6a45c3d3-921d-43e7-8404-387cd86f7df5"/>
+				<textFieldExpression><![CDATA[$F{PoslovnaGodina_godina}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement x="87" y="0" width="59" height="20" uuid="308be829-7cc2-4bb0-ae46-09f555f3d6cb"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ukupno:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="238" y="0" width="100" height="20" uuid="e15ea32d-05ae-482c-86b1-670bb3fc2611"/>
+				<textFieldExpression><![CDATA[$V{ukupnoOsnovica}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="338" y="0" width="100" height="20" uuid="1356fc7b-55bb-427b-97bc-3fa01fe36f26"/>
+				<textFieldExpression><![CDATA[$V{ukupanPDV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="438" y="0" width="100" height="20" uuid="34bca0f6-5590-4c08-b2a2-5fceeadb13d4"/>
+				<textFieldExpression><![CDATA[$V{ukupanIznos}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="3543e7ad-2da4-40f1-a29e-8780cfe7c920"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Faktura" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="adf5b7c6-3b4b-4d13-bec6-16b9246ca13d">
+	<property name="ireport.zoom" value="1.331000000000003"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="237"/>
+	<queryString>
+		<![CDATA[SELECT
+     Faktura."id" AS Faktura_id,
+     Faktura."brojFakture" AS Faktura_brojFakture,
+     Faktura."datumFakture" AS Faktura_datumFakture,
+     Faktura."datumObracuna" AS Faktura_datumObracuna,
+     Faktura."datumValute" AS Faktura_datumValute,
+     Faktura."iznosZaPlacanje" AS Faktura_iznosZaPlacanje,
+     Faktura."osnovica" AS Faktura_osnovica,
+     Faktura."pozivNaBroj" AS Faktura_pozivNaBroj,
+     Faktura."statusFakture" AS Faktura_statusFakture,
+     Faktura."tipFakture" AS Faktura_tipFakture,
+     Faktura."ukupanPDV" AS Faktura_ukupanPDV,
+     Faktura."ukupanPorez" AS Faktura_ukupanPorez,
+     Faktura."ukupanRabat" AS Faktura_ukupanRabat,
+     Faktura."ukupnoRobaIUsluga" AS Faktura_ukupnoRobaIUsluga,
+     Faktura."uplataNaRacun" AS Faktura_uplataNaRacun,
+     Faktura."otpremnica_id" AS Faktura_otpremnica_id,
+     Faktura."poslovnaGodina_id" AS Faktura_poslovnaGodina_id,
+     Faktura."poslovniPartner_id" AS Faktura_poslovniPartner_id,
+     Faktura."preduzece_id" AS Faktura_preduzece_id,
+     Cenovnik."id" AS Cenovnik_id,
+     Cenovnik."datmPrimene" AS Cenovnik_datmPrimene,
+     Cenovnik."rbrCenovnika" AS Cenovnik_rbrCenovnika,
+     Cenovnik."preduzece_id" AS Cenovnik_preduzece_id,
+     PoslovniPartner."id" AS PoslovniPartner_id,
+     PoslovniPartner."adresa" AS PoslovniPartner_adresa,
+     PoslovniPartner."nazivPartnera" AS PoslovniPartner_nazivPartnera,
+     PoslovniPartner."vrstaPartnera" AS PoslovniPartner_vrstaPartnera,
+     PoslovniPartner."mesto_id" AS PoslovniPartner_mesto_id,
+     PoslovniPartner."preduzece_id" AS PoslovniPartner_preduzece_id,
+     Preduzece."id" AS Preduzece_id,
+     Preduzece."adresaPreduzeca" AS Preduzece_adresaPreduzeca,
+     Preduzece."email" AS Preduzece_email,
+     Preduzece."logo" AS Preduzece_logo,
+     Preduzece."naziv" AS Preduzece_naziv,
+     Preduzece."pib" AS Preduzece_pib,
+     Preduzece."telefon" AS Preduzece_telefon,
+     Preduzece."mesto_id" AS Preduzece_mesto_id,
+     RobaUsluga."id" AS RobaUsluga_id,
+     RobaUsluga."jedinicaMere" AS RobaUsluga_jedinicaMere,
+     RobaUsluga."nazivRobeUsluge" AS RobaUsluga_nazivRobeUsluge,
+     RobaUsluga."grupaRobe_id" AS RobaUsluga_grupaRobe_id,
+     RobaUsluga."narudzba_id" AS RobaUsluga_narudzba_id,
+     RobaUsluga."otpremnica_id" AS RobaUsluga_otpremnica_id,
+     StavkeFakture."id" AS StavkeFakture_id,
+     StavkeFakture."iznosPDV" AS StavkeFakture_iznosPDV,
+     StavkeFakture."iznosStavke" AS StavkeFakture_iznosStavke,
+     StavkeFakture."jedinicnaCena" AS StavkeFakture_jedinicnaCena,
+     StavkeFakture."kolicina" AS StavkeFakture_kolicina,
+     StavkeFakture."osnovicaZaPDV" AS StavkeFakture_osnovicaZaPDV,
+     StavkeFakture."procenatPDV" AS StavkeFakture_procenatPDV,
+     StavkeFakture."rabat" AS StavkeFakture_rabat,
+     StavkeFakture."faktura_id" AS StavkeFakture_faktura_id,
+     StavkeFakture."robaUsluga_id" AS StavkeFakture_robaUsluga_id
+FROM
+     "dbo"."PoslovniPartner" PoslovniPartner INNER JOIN "dbo"."Faktura" Faktura ON PoslovniPartner."id" = Faktura."poslovniPartner_id"
+     INNER JOIN "dbo"."Preduzece" Preduzece ON Faktura."preduzece_id" = Preduzece."id"
+     AND Preduzece."id" = PoslovniPartner."preduzece_id"
+     INNER JOIN "dbo"."Cenovnik" Cenovnik ON Preduzece."id" = Cenovnik."preduzece_id"
+     INNER JOIN "dbo"."StavkeFakture" StavkeFakture ON Faktura."id" = StavkeFakture."faktura_id"
+     INNER JOIN "dbo"."RobaUsluga" RobaUsluga ON StavkeFakture."robaUsluga_id" = RobaUsluga."id"]]>
+	</queryString>
+	<field name="Faktura_id" class="java.lang.Long"/>
+	<field name="Faktura_brojFakture" class="java.lang.Integer"/>
+	<field name="Faktura_datumFakture" class="java.lang.String"/>
+	<field name="Faktura_datumObracuna" class="java.lang.String"/>
+	<field name="Faktura_datumValute" class="java.lang.String"/>
+	<field name="Faktura_iznosZaPlacanje" class="java.lang.Double"/>
+	<field name="Faktura_osnovica" class="java.lang.Double"/>
+	<field name="Faktura_pozivNaBroj" class="java.lang.String"/>
+	<field name="Faktura_statusFakture" class="java.lang.String"/>
+	<field name="Faktura_tipFakture" class="java.lang.String"/>
+	<field name="Faktura_ukupanPDV" class="java.lang.Double"/>
+	<field name="Faktura_ukupanPorez" class="java.lang.Double"/>
+	<field name="Faktura_ukupanRabat" class="java.lang.Double"/>
+	<field name="Faktura_ukupnoRobaIUsluga" class="java.lang.Double"/>
+	<field name="Faktura_uplataNaRacun" class="java.lang.String"/>
+	<field name="Faktura_otpremnica_id" class="java.lang.Long"/>
+	<field name="Faktura_poslovnaGodina_id" class="java.lang.Long"/>
+	<field name="Faktura_poslovniPartner_id" class="java.lang.Long"/>
+	<field name="Faktura_preduzece_id" class="java.lang.Long"/>
+	<field name="Cenovnik_id" class="java.lang.Long"/>
+	<field name="Cenovnik_datmPrimene" class="java.lang.String"/>
+	<field name="Cenovnik_rbrCenovnika" class="java.lang.Integer"/>
+	<field name="Cenovnik_preduzece_id" class="java.lang.Long"/>
+	<field name="PoslovniPartner_id" class="java.lang.Long"/>
+	<field name="PoslovniPartner_adresa" class="java.lang.String"/>
+	<field name="PoslovniPartner_nazivPartnera" class="java.lang.String"/>
+	<field name="PoslovniPartner_vrstaPartnera" class="java.lang.String"/>
+	<field name="PoslovniPartner_mesto_id" class="java.lang.Long"/>
+	<field name="PoslovniPartner_preduzece_id" class="java.lang.Long"/>
+	<field name="Preduzece_id" class="java.lang.Long"/>
+	<field name="Preduzece_adresaPreduzeca" class="java.lang.String"/>
+	<field name="Preduzece_email" class="java.lang.String"/>
+	<field name="Preduzece_logo" class="java.lang.String"/>
+	<field name="Preduzece_naziv" class="java.lang.String"/>
+	<field name="Preduzece_pib" class="java.lang.String"/>
+	<field name="Preduzece_telefon" class="java.lang.String"/>
+	<field name="Preduzece_mesto_id" class="java.lang.Long"/>
+	<field name="RobaUsluga_id" class="java.lang.Long"/>
+	<field name="RobaUsluga_jedinicaMere" class="java.lang.String"/>
+	<field name="RobaUsluga_nazivRobeUsluge" class="java.lang.String"/>
+	<field name="RobaUsluga_grupaRobe_id" class="java.lang.Long"/>
+	<field name="RobaUsluga_narudzba_id" class="java.lang.Long"/>
+	<field name="RobaUsluga_otpremnica_id" class="java.lang.Long"/>
+	<field name="StavkeFakture_id" class="java.lang.Long"/>
+	<field name="StavkeFakture_iznosPDV" class="java.lang.Double"/>
+	<field name="StavkeFakture_iznosStavke" class="java.lang.Double"/>
+	<field name="StavkeFakture_jedinicnaCena" class="java.lang.Double"/>
+	<field name="StavkeFakture_kolicina" class="java.lang.Double"/>
+	<field name="StavkeFakture_osnovicaZaPDV" class="java.lang.Double"/>
+	<field name="StavkeFakture_procenatPDV" class="java.lang.Double"/>
+	<field name="StavkeFakture_rabat" class="java.lang.Double"/>
+	<field name="StavkeFakture_faktura_id" class="java.lang.Long"/>
+	<field name="StavkeFakture_robaUsluga_id" class="java.lang.Long"/>
+	<variable name="StavkeFakture_osnovicaZaPDV_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{StavkeFakture_osnovicaZaPDV}]]></variableExpression>
+	</variable>
+	<variable name="StavkeFakture_osnovicaZaPDV_2" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{StavkeFakture_osnovicaZaPDV}]]></variableExpression>
+	</variable>
+	<variable name="StavkeFakture_procenatPDV_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{StavkeFakture_procenatPDV}]]></variableExpression>
+	</variable>
+	<variable name="total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{StavkeFakture_iznosStavke}]]></variableExpression>
+	</variable>
+	<variable name="ukupnoOsnovica" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{StavkeFakture_osnovicaZaPDV}]]></variableExpression>
+	</variable>
+	<variable name="StavkeFakture_rabat_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{StavkeFakture_rabat}]]></variableExpression>
+	</variable>
+	<variable name="StavkeFakture_osnovicaZaPDV_3" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{StavkeFakture_osnovicaZaPDV}]]></variableExpression>
+	</variable>
+	<variable name="procenat" class="java.lang.Float" calculation="Average">
+		<variableExpression><![CDATA[$F{StavkeFakture_procenatPDV}]]></variableExpression>
+	</variable>
+	<variable name="ukupnoPDV" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{StavkeFakture_iznosPDV}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="128" splitType="Stretch">
+			<staticText>
+				<reportElement x="119" y="0" width="225" height="58" uuid="aa1b663b-104b-4bb7-af2c-762b0040accb"/>
+				<textElement textAlignment="Right">
+					<font size="40" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Faktura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="361" y="28" width="30" height="20" uuid="3c6871b3-567e-4d9e-a14b-60b87445ddfa"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[br.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="391" y="28" width="100" height="20" uuid="52b03150-c5a3-4721-9dcf-3ae8c838155c"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Faktura_brojFakture}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="156" y="70" width="100" height="20" uuid="513ab7b6-10d8-488c-b9a8-821a2970769b"/>
+				<text><![CDATA[Datum Fakture:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="90" width="100" height="20" uuid="ec4d90ae-8c10-41d0-96e3-2c4368491823"/>
+				<text><![CDATA[Datum valute:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="256" y="70" width="100" height="20" uuid="a406f651-8309-4b18-9d09-5506b9668a6d"/>
+				<textFieldExpression><![CDATA[$F{Faktura_datumFakture}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="256" y="90" width="100" height="20" uuid="1e0dca13-607a-4dee-9087-bd166d53f1dd"/>
+				<textFieldExpression><![CDATA[$F{Faktura_datumValute}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="261" splitType="Stretch">
+			<textField>
+				<reportElement x="19" y="24" width="208" height="82" uuid="ea0b908f-5c44-4c89-a179-e14f9bcffbaf"/>
+				<textElement textAlignment="Justified">
+					<font size="36"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Preduzece_naziv}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="312" y="24" width="100" height="20" uuid="c035c3ed-390d-43f8-a478-8e739401ca47"/>
+				<text><![CDATA[PIB:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="44" width="100" height="20" uuid="27f519b5-5f36-409e-ac91-3b47be58ab55"/>
+				<text><![CDATA[Adresa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="64" width="100" height="20" uuid="bd2ef1a4-c58b-403a-9b86-51797cf7d020"/>
+				<text><![CDATA[Mail:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="86" width="100" height="20" uuid="0a3e52b2-a6f5-4427-aacd-4ef7f64be923"/>
+				<text><![CDATA[Telefon:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="412" y="66" width="100" height="20" uuid="84703dd8-d847-4cc8-8eaf-396ba51bd941"/>
+				<textFieldExpression><![CDATA[$F{Preduzece_email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="412" y="86" width="100" height="20" uuid="06ee5111-6cc0-41b3-9c74-7e0ec1274ed6"/>
+				<textFieldExpression><![CDATA[$F{Preduzece_telefon}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="412" y="24" width="100" height="20" uuid="645e69cf-ea93-40b8-a321-5bbbb7ce0c31"/>
+				<textFieldExpression><![CDATA[$F{Preduzece_pib}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="412" y="46" width="100" height="20" uuid="45b08433-693e-45ac-bbd8-0f7f83fa682c"/>
+				<textFieldExpression><![CDATA[$F{Preduzece_adresaPreduzeca}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="555" height="2" uuid="28d7f3f5-fa30-4b40-9a37-54d9d86d2614"/>
+			</line>
+			<rectangle radius="10">
+				<reportElement x="21" y="119" width="323" height="118" uuid="95c2a060-50ad-4a6f-994a-d6a23eacf78c"/>
+			</rectangle>
+			<textField>
+				<reportElement x="156" y="134" width="148" height="40" uuid="de861957-4679-496b-8ac9-59b9a610897c"/>
+				<textElement>
+					<font size="15" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PoslovniPartner_nazivPartnera}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="189" y="194" width="100" height="20" uuid="55111cd3-f6ce-421d-a472-a84b7e7e3fe9"/>
+				<textElement>
+					<font size="15"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PoslovniPartner_adresa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="41" y="134" width="115" height="40" uuid="72e46e8b-d4f9-4a01-9c0e-2b3fbed8c090"/>
+				<textElement>
+					<font size="15" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Naziv partnera:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="99" y="194" width="100" height="20" uuid="e6733a2b-1e6a-4e93-8a16-5ff1208bb25c"/>
+				<textElement>
+					<font size="15"/>
+				</textElement>
+				<text><![CDATA[Adresa: ]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="77" height="20" uuid="69349bb0-14f7-4224-a515-3c7e6059555d"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[Roba/usluga]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="77" y="0" width="64" height="20" uuid="4e4db275-6169-4689-a14d-ec86f82c7d84"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[Kolicina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="141" y="0" width="69" height="20" uuid="fae79267-58dc-4bee-a212-11ad618aafb4"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[Jedinica mere]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="0" width="58" height="20" uuid="99507d46-c6e4-4824-8c7d-d03642bf6c75"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[Rabat	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="268" y="0" width="60" height="20" uuid="e6e314a8-8b71-4aa1-82bc-ef2ffda115da"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[Osnovica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="328" y="0" width="61" height="20" uuid="f866196f-4fce-4a0f-95eb-b80a419a42a4"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[PDV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="391" y="0" width="65" height="20" uuid="a4a3fbc4-f5dd-4eaf-8541-ad1daa50fa95"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[Iznos PDV-a]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="456" y="0" width="69" height="20" uuid="2dbad938-b361-42a1-a4cf-f7315233e0ea"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom"/>
+				<text><![CDATA[Ukupan PDV]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="20" width="525" height="1" uuid="c0739a88-32ad-4807-a42a-624d0e0b3e15"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="71840d5a-b60f-412c-b3a7-740cfc66fd19"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="77" height="20" uuid="5d845a52-1b0e-47ba-b98b-50e6183a69b8"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{RobaUsluga_nazivRobeUsluge}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="77" y="0" width="64" height="20" uuid="7896494e-43b2-4269-bc84-a20b6ad2594d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{StavkeFakture_kolicina}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="0" width="69" height="20" uuid="b91e2c69-9bf8-460f-9058-662eb40a60f7"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{RobaUsluga_jedinicaMere}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="0" width="58" height="20" uuid="89fa8030-947c-4ef0-affe-106f52377a59"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{StavkeFakture_rabat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="268" y="0" width="60" height="20" uuid="99043ec6-43c1-428f-b58d-fedad543a3ea"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{StavkeFakture_osnovicaZaPDV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="389" y="0" width="67" height="20" uuid="7fb95419-5bd3-48b9-a34c-31b51df46a20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{StavkeFakture_iznosPDV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="328" y="0" width="61" height="20" uuid="2d99840c-0d59-4c11-bccb-4703206a3596"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{StavkeFakture_procenatPDV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="456" y="0" width="69" height="20" uuid="bb8a15b9-b257-4618-acc6-608f68446057"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{StavkeFakture_iznosStavke}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="183" splitType="Stretch">
+			<textField>
+				<reportElement x="268" y="22" width="60" height="20" uuid="9d527c75-ca5f-484e-a672-bd653c794adf"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{ukupnoOsnovica}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="141" y="22" width="100" height="20" uuid="3333f176-5964-4ff3-b81f-4095530398ee"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ukupno:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="328" y="22" width="61" height="20" uuid="e4de6d5c-f7fa-4a2a-8adb-f95df924a606"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{procenat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="389" y="22" width="67" height="20" uuid="d44efe64-bb5e-4d72-a822-39f633a5c10b"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{ukupnoPDV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="22" width="70" height="20" uuid="bdbce3dd-9dbd-485c-9949-7e93d7fbca13"/>
+				<textElement textAlignment="Center">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="21" width="555" height="1" uuid="a7d7d767-e792-44e0-9c7c-f6d67db7cf61"/>
+			</line>
+			<staticText>
+				<reportElement x="21" y="101" width="89" height="20" uuid="724b4765-2f9c-4938-8b3c-028d6854e37d"/>
+				<text><![CDATA[Potpis izdavaoca:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="100" width="87" height="20" uuid="b8f5f669-f5a4-42e7-b834-0fb3fc0e5b12"/>
+				<text><![CDATA[Potpis primaoca:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="110" y="120" width="100" height="1" uuid="a446f477-34fd-427f-ad12-3851e60b6dbb"/>
+			</line>
+			<line>
+				<reportElement x="391" y="119" width="100" height="1" uuid="284377ef-13d0-4ddf-93a5-435c49d16395"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

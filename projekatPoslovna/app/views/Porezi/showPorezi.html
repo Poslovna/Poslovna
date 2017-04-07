@@ -1,0 +1,123 @@
+#{extends 'standardForm.html' /}
+#{set title:'Porez' /}
+
+
+<script>
+
+function sync(item){
+	oznakaPoreza = item.find(".oznakaPoreza").html()
+	nazivPoreza = item.find(".nazivPoreza").html()
+	vazeci = item.find(".vazeci").html()
+    id = item.find(".id").html()
+    $("#oznakaPoreza").val(oznakaPoreza);
+	$("#nazivPoreza").val(nazivPoreza);
+	$("#vazeci").val(vazeci);
+    $("#id").val(id);
+}
+
+function remove(id){
+	$(location).attr('href', '/Porezi/delete?id='+id);
+}
+
+
+</script>
+
+
+<p>
+<ul>
+  <li><a href="http://localhost:9000" id="pickup"><img src="@{'/public/images/home.png'}"/></a></li>
+
+  <li><a href="@{Porezi.showPorezi("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{Porezi.showPorezi("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a  id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a  id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a  id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a  id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{Porezi.showPorezi("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  
+</ul>
+</p>
+
+
+
+#{set 'action'}
+
+	#{if mode == 'add'}
+		@{Porezi.create()}
+	#{/if}
+	#{elseif mode == 'edit'}
+		 @{Porezi.edit()}
+ 	#{/elseif}
+ 	#{else}
+ 		@{Porezi.filter()}
+	 #{/else}
+ #{/set}
+
+
+
+<h1>Porez</h1>
+
+
+<table>
+	<tr class = "header">
+	   <th>Oznaka poreza</th>
+	   <th>Naziv poreza</th>
+	   <th>Vazeci</th>
+	   
+	   
+	</tr>
+#{list items:porezi, as:'porez'}
+	<tr>
+		<td class = "oznakaPoreza">${porez.oznakaPoreza}</td>
+		<td class = "nazivPoreza">${porez.nazivPoreza}</td>
+		<td class = "vazeci">${porez.vazeciStr}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${porez.id}</td>
+	</tr>
+#{/list}
+</table>
+
+
+<div class = "panel">
+	<p>
+	
+		<form action=${action} method="post">
+		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'oznakaPoreza'}
+					<label for = "${field.id}">oznaka poreza</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'nazivPoreza'}
+					<label for = "${field.id}">naziv poreza</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'vazeci'}
+					<label for = "${field.id}">vazeci</label>
+					<input type = "checkbox" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{Porezi.showPorezi("")}" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>
+	</p>
+</div>
+
+

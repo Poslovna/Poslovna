@@ -1,0 +1,134 @@
+#{extends 'standardForm.html' /}
+#{set title:'Istorija poreza' /}
+
+
+
+<script>
+
+
+$(document).ready(function(){
+	$("#preduzecaPickup").click(function(){
+		id = $(".highlighted").find(".id").html();
+		$("select").val(id);
+		$('#preduzecaModal').modal('toggle');
+	});
+});
+
+
+function sync(item){
+	idIPoreza = item.find(".idIPoreza").html()
+	datumPrimene = item.find(".datumPrimene").html()
+    id = item.find(".id").html()
+    $("#idIPoreza").val(idIPoreza);
+	$("#datumPrimene").val(datumPrimene);
+    $("#id").val(id);
+}
+
+function remove(id){
+	$(location).attr('href', '/IstorijePoreza/delete?id='+id);
+}
+
+
+</script>
+
+<p>
+<ul>
+  <li><a href="http://localhost:9000" id="pickup"><img src="@{'/public/images/home.png'}"/></a></li>
+
+  <li><a href="@{IstorijePoreza.showIPoreza("filter")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{IstorijePoreza.showIPoreza("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a  id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a  id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a  id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a  id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{IstorijePoreza.showIPoreza("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  
+</ul>
+</p>
+
+
+#{set 'action'}
+
+	#{if mode == 'add'}
+		@{IstorijePoreza.create()}
+	#{/if}
+	#{elseif mode == 'edit'}
+		 @{IstorijePoreza.edit()}
+ 	#{/elseif}
+ 	#{else}
+ 		@{IstorijePoreza.filter()}
+	 #{/else}
+ #{/set}
+
+
+
+<h1>Istorije poreza</h1>
+
+<table>
+	<tr class = "header">
+	   <th>ID poreza</th> 
+	   <th>Datum primene</th>
+	   <th>Preduzece</th>
+	   
+	</tr>
+#{list items:istorijePoreza, as:'istorijaPoreza'}
+	<tr>
+		<td class = "idIPoreza">${istorijaPoreza.idIPoreza}</td>
+		<td class = "datumPrimene">${istorijaPoreza.datumPrimene}</td>
+		<td class = "preduzece">#{if istorijaPoreza.preduzece}${istorijaPoreza.preduzece.naziv}#{/if}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${istorijaPoreza.id}</td>
+	</tr>
+#{/list}
+</table>
+
+
+
+<div class = "panel">
+	<p>
+	
+		<form action=${action} method="post">
+		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'idIPoreza'}
+					<label for = "${field.id}">id poreza</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'datumPrimene'}
+					<label for = "${field.id}">datum primene</label>
+					<input type = "date" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'preduzece'}
+					<label for = "${field.id}">Preduzece</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:preduzeca, as:'preduzece'}
+					<option value = "${preduzece.id}">${preduzece.naziv}</option>
+					#{/list}
+					</select>
+					
+<!-- 					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#preduzecaModal">...	</button> -->
+				#{/}
+				</p>
+				
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{IstorijePoreza.showIPoreza("")}" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>
+	</p>
+</div>
+

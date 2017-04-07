@@ -22,14 +22,26 @@ public class Porez extends Model {
 	@Column(length=6) 
 	public Boolean vazeci;
 	
-	@OneToMany(mappedBy="porez")
-	public List<ObracunatiPorezi> obracunatiPorezi;
+	@Column(nullable=true)
+	public String vazeciStr;
+	
 	
 	@OneToMany(mappedBy="porez")
 	public List<PoreskaStopa> poreskaStopa;
+
+	public Porez(String oznakaPoreza, String nazivPoreza, Boolean vazeci,
+			String vazeciStr,
+			List<PoreskaStopa> poreskaStopa) {
+		super();
+		this.oznakaPoreza = oznakaPoreza;
+		this.nazivPoreza = nazivPoreza;
+		this.vazeci = vazeci;
+		this.vazeciStr = vazeciStr;
+		this.poreskaStopa = poreskaStopa;
+	}
 	
-
-
-
+	public Porez(){
+		super();
+	}
 
 }

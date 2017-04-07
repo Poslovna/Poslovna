@@ -14,7 +14,7 @@ public class StavkeFakture extends Model{
 
 	
 	@Column(length=30) 
-	public String kolicina;
+	public Double kolicina;
 	
 	@Column(nullable=false)
 	@Max(15)
@@ -53,6 +53,25 @@ public class StavkeFakture extends Model{
 	@ManyToOne
 	public  RobaUsluga robaUsluga;
 
+	public StavkeFakture(Double kolicina, Double jedinicnaCena, Double rabat,
+			Double osnovicaZaPDV, Double procenatPDV, Double iznosPDV,
+			Double iznosStavke, Faktura faktura, RobaUsluga robaUsluga) {
+		
+		this.kolicina = kolicina;
+		this.jedinicnaCena = jedinicnaCena;
+		this.rabat = rabat;
+		this.osnovicaZaPDV = osnovicaZaPDV;
+		this.procenatPDV = procenatPDV;
+		this.iznosPDV = iznosPDV;
+		this.iznosStavke = iznosStavke;
+		this.faktura = faktura;
+		this.robaUsluga = robaUsluga;
+	}
 
+	public StavkeFakture() {
+		super();	}
+
+
+	
 
 }

@@ -3,27 +3,29 @@
 
 <script>
 $(document).ready(function(){
-	$("#fakturaPickup").click(function(){
+	$("#preduzecePickup").click(function(){
 		id = $(".highlighted").find(".id").html();
 		$("select").val(id);
-		$('#faktureModal').modal('toggle');
+		$('#preduzecaModal').modal('toggle');
 	});
 });
 
 function sync(item){
-	brojFakture = item.find(".nm_brojFakture").html()
-	tipFakture = item.find(".nm_tipFakture").html()
-	datumFakture = item.find(".nm_datumFakture").html()
-	datumValute = item.find(".nm_datumValute").html()
-	datumObracuna = item.find(".nm_datumObracuna").html()
-	ukupnoRobaIUsluga = item.find(".nm_ukupnoRobaIUsluga").html()
-	ukupanRabat = item.find(".nm_ukupanRabat").html()
-	ukupanPorez = item.find(".nm_ukupanPorez").html()
-	iznosFakture = item.find(".nm_iznosFakture").html()
-	uplataNaRacun = item.find(".nm_uplataNaRacun").html()
-	pozivNaBroj = item.find(".nm_pozivNaBroj").html()
-	statusFakture = item.find(".nm_statusFakture").html()
-	id = item.find(".nm_id").html()
+	brojFakture = item.find(".brojFakture").html()
+	tipFakture = item.find(".tipFakture").html()
+	datumFakture = item.find(".datumFakture").html()
+	datumValute = item.find(".datumValute").html()
+	datumObracuna = item.find(".datumObracuna").html()
+	ukupnoRobaIUsluga = item.find(".ukupnoRobaIUsluga").html()
+	ukupanRabat = item.find(".ukupanRabat").html()
+	ukupanPorez = item.find(".ukupanPorez").html()
+	osnovica = item.find(".osnovica").html()
+	ukupanPDV = item.find(".ukupanPDV").html()
+	iznosZaPlacanje = item.find(".iznosZaPlacanje").html()
+	uplataNaRacun = item.find(".uplataNaRacun").html()
+	pozivNaBroj = item.find(".pozivNaBroj").html()
+	statusFakture = item.find(".statusFakture").html()
+	id = item.find(".id").html()
 	
 	$("#brojFakture").val(brojFakture);
     $("#tipFakture").val(tipFakture);
@@ -33,7 +35,9 @@ function sync(item){
     $("#ukupnoRobaIUsluga").val(ukupnoRobaIUsluga);
     $("#ukupanRabat").val(ukupanRabat);
     $("#ukupanPorez").val(ukupanPorez);
-    $("#iznosFakture").val(iznosFakture);
+    $("#osnovica").val(osnovica);
+    $("#ukupanPDV").val(ukupanPDV);
+    $("#iznosZaPlacanje").val(iznosZaPlacanje);
     $("#uplataNaRacun").val(uplataNaRacun);
     $("#pozivNaBroj").val(pozivNaBroj);
     $("#statusFakture").val(statusFakture);
@@ -41,15 +45,21 @@ function sync(item){
 	
 
 }
-
-// function remove(id){
-// 	$(location).attr('href', '/Fakture/delete?id='+id);
-// }
+function stavke(id){
+	$(location).attr('href', '/StavkeFaktura/showStavkeFaktura?mode='+id);
+	
+}
+function remove(id){
+	$(location).attr('href', '/Fakture/delete?id='+id);
+}
 
 </script>
 
 <p>
 <ul>
+
+  <li><a href="http://localhost:9000" id="pickup"><img src="@{'/public/images/home.png'}"/></a></li>
+
   <li><a href="@{Fakture.showFakture("filter")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
   <li><a href="@{Fakture.showFakture("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
   <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
@@ -61,6 +71,12 @@ function sync(item){
   <li><a href="@{Fakture.showFakture("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
   <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
   <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  <li><a href="@{Fakture.showFakture("export")}" id = "export"><img src="@{'/public/images/export.png'}"/></a></li>
+<!--   <li><a href="@{Fakture.showFakture("generate")}" id = "generate"><img src="@{'/public/images/gen.png'}"/></a></li> -->
+     <li><a href="@{Fakture.showFakture("generate")}" id = "generate">Generisi otpremnicu</a></li>
+   
+    <li><a href="@{Fakture.showFakture("stavke")}" id = "stavke">Stavke faktura</a></li>
+  
 </ul>
 </p>
 
@@ -69,6 +85,7 @@ function sync(item){
 
 <table>
 	<tr class = "header">
+
 	   <th>Broj fakture</th> 
 	   <th>Tip fakture</th>
 	   <th>Datum fakture</th> 
@@ -77,7 +94,9 @@ function sync(item){
 	   <th>Ukupno roba i usluga</th>
 	   <th>Ukupan rabat</th> 
 	   <th>Ukupan porez</th>
-	   <th>Iznos fakture</th> 
+	   <th>Osnovica</th> 
+	   <th>Ukupan PDV</th> 
+	   <th>Iznos za placanje</th> 
 	   <th>Uplata na racun</th>
 	   <th>Poziv na broj</th> 
 	   <th>Status fakture</th>
@@ -90,25 +109,28 @@ function sync(item){
 	</tr>
 #{list items:fakture, as:'faktura'}
 	<tr>
-		<td class = "nm_brojFakture">${faktura.brojFakture}</td>
-		<td class = "nm_tipFakture">${faktura.tipFakture}</td>
-		<td class = "nm_datumFakture">${faktura.datumFakture}</td>
-		<td class = "nm_datumValute">${faktura.datumValute}</td>
-		<td class = "nm_datumObracuna">${faktura.datumObracuna}</td>
-		<td class = "nm_ukupnoRobaIUsluga">${faktura.ukupnoRobaIUsluga}</td>
-		<td class = "nm_ukupanRabat">${faktura.ukupanRabat}</td>
-		<td class = "nm_ukupanPorez">${faktura.ukupanPorez}</td>
-		<td class = "nm_iznosFakture">${faktura.iznosFakture}</td>
-		<td class = "nm_uplataNaRacun">${faktura.uplataNaRacun}</td>
-		<td class = "nm_pozivNaBroj">${faktura.pozivNaBroj}</td>
-		<td class = "nm_statusFakture">${faktura.statusFakture}</td>
+	
+		<td class = "brojFakture">${faktura.brojFakture}</td>
+		<td class = "tipFakture">${faktura.tipFakture}</td>
+		<td class = "datumFakture">${faktura.datumFakture}</td>
+		<td class = "datumValute">${faktura.datumValute}</td>
+		<td class = "datumObracuna">${faktura.datumObracuna}</td>
+		<td class = "ukupnoRobaIUsluga">${faktura.ukupnoRobaIUsluga}</td>
+		<td class = "ukupanRabat">${faktura.ukupanRabat}</td>
+		<td class = "ukupanPorez">${faktura.ukupanPorez}</td>
+		<td class = "osnovica">${faktura.osnovica}</td>
+		<td class = "ukupanPDV">${faktura.ukupanPDV}</td>
+		<td class = "iznosZaPlacanje">${faktura.iznosZaPlacanje}</td>
+		<td class = "uplataNaRacun">${faktura.uplataNaRacun}</td>
+		<td class = "pozivNaBroj">${faktura.pozivNaBroj}</td>
+		<td class = "statusFakture">${faktura.statusFakture}</td>
 		
 		<td class = "preduzece">#{if faktura.preduzece}${faktura.preduzece.naziv}#{/if}</td>
 		<td class = "poslovnaGodina">#{if faktura.poslovnaGodina}${faktura.poslovnaGodina.godina}#{/if}</td>
 		<td class = "poslovniPartner">#{if faktura.poslovniPartner}${faktura.poslovniPartner.nazivPartnera}#{/if}</td>		
 		<td class = "otpremnica">#{if faktura.otpremnica}${faktura.otpremnica.brojOtpremnice}#{/if}</td>		
 		
-		<td style = "visibility: hidden; max-width: 0px" class = "nm_id">${faktura.id}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${faktura.id}</td>
 	</tr>
 #{/list}
 </table>
@@ -121,6 +143,16 @@ function sync(item){
     #{elseif mode == 'edit'}
         @{Fakture.edit()}
     #{/elseif}
+    #{elseif mode == 'export'}
+		@{Fakture.export()}
+	#{/elseif}
+	#{elseif mode == 'stavke'}
+		@{StavkeFaktura.stavke()}
+	#{/elseif}
+	
+	#{elseif mode == 'generate'}
+		@{Fakture.generate()}
+	#{/elseif}
     #{else}
        @{Fakture.search()}
     #{/else}
@@ -152,21 +184,21 @@ function sync(item){
 				<p>
 				#{field 'datumFakture'}
 					<label for = "${field.id}">Datum fakture</label>
-					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+					<input type = "date" name = "${field.name}" id = "${field.name}"/>
 				#{/}
 				</p>
 				
 					<p>
 				#{field 'datumValute'}
 					<label for = "${field.id}">Datum valute</label>
-					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+					<input type = "date" name = "${field.name}" id = "${field.name}"/>
 				#{/}
 				</p>
 				
 					<p>
 				#{field 'datumObracuna'}
 					<label for = "${field.id}">Datum obracuna</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+					<input type = "date" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
 				
@@ -192,9 +224,23 @@ function sync(item){
 				</p>
 				
 					<p>
-				#{field 'iznosFakture'}
-					<label for = "${field.id}">Iznos fakture</label>
-					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{field 'osnovica'}
+					<label for = "${field.id}">Osnovica</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}" readonly="readonly" value="${faktura.osnovica}"/>
+				#{/}
+				</p>
+				
+					<p>
+				#{field 'ukupanPDV'}
+					<label for = "${field.id}">Ukupan PDV</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}" readonly="readonly" value="${faktura.ukupanPDV}"/>
+				#{/}
+				</p>
+				
+					<p>
+				#{field 'iznosZaPlacanje'}
+					<label for = "${field.id}">Iznos za placanje</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}" readonly="readonly" value="${faktura.iznosZaPlacanje}"/>
 				#{/}
 				</p>
 				
@@ -228,7 +274,7 @@ function sync(item){
 					#{/list}
 					</select>
 					
-<!-- 					 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#preduzecaModal">...	</button> -->
+					 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#preduzecaModal">...	</button>
 				#{/}
 				</p>
 				
@@ -279,11 +325,12 @@ function sync(item){
 		</form>
 	</p>
 </div>
+</div>
 
 <!--  <!-- Modal --> -->
 <!-- <div class="modal fade" id="preduzecaModal" role="dialog"> -->
 <!--  	<div class="modal-dialog"> -->
-<!--  		<!-- Modal content--> -->
+<!--  		<!-- Modal content --> -->
 <!--  	<div class="modal-content"> -->
 <!-- 	<div class="modal-header"> -->
 <!--       			Preduzeca -->
@@ -321,4 +368,4 @@ function sync(item){
 <!-- </div> -->
    
    
-</div>
+<!-- </div> -->

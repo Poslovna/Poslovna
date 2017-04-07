@@ -1,5 +1,7 @@
 package models;
 
+
+
 import java.sql.Date;
 import java.util.List;
 
@@ -28,13 +30,13 @@ public class Faktura extends Model {
 	public String tipFakture;
 	
 	@Column(length=40)
-	public Date datumFakture;
+	public String datumFakture;
 	
 	@Column(length=40)
-	public Date datumValute;
+	public String datumValute;
 	
 	@Column(length=40)
-	public Date datumObracuna;
+	public String datumObracuna;
 	
 	@Column(nullable=true)
 	@Max(15)
@@ -51,10 +53,18 @@ public class Faktura extends Model {
 	@Min(2)
 	public Double ukupanPorez;
 	
+	@Column(nullable=false) 
+	public Double osnovica;
+	
+	@Column(nullable=false) 
+	public Double ukupanPDV;
+	
 	@Column(nullable=true)
 	@Max(15)
 	@Min(2)
-	public Double iznosFakture;
+	public Double iznosZaPlacanje;
+	
+	
 	
 	@Column(length=30)
 	public String uplataNaRacun;
@@ -80,8 +90,41 @@ public class Faktura extends Model {
 	@ManyToOne
 	public Otpremnica otpremnica;
 
-	@OneToMany(mappedBy="faktura")
-	public List<ObracunatiPorezi> obracunatiPorezi;
+
+	public Faktura(Integer brojFakture, String tipFakture, String datumFakture,
+			String datumValute, String datumObracuna, Double ukupnoRobaIUsluga,
+			Double ukupanRabat, Double ukupanPorez, Double osnovica,
+			Double ukupanPDV, Double iznosZaPlacanje, String uplataNaRacun,
+			String pozivNaBroj, String statusFakture, Preduzece preduzece,
+			PoslovnaGodina poslovnaGodina, List<StavkeFakture> stavkeFakture,
+			PoslovniPartner poslovniPartner, Otpremnica otpremnica) {
+		
+		this.brojFakture = brojFakture;
+		this.tipFakture = tipFakture;
+		this.datumFakture = datumFakture;
+		this.datumValute = datumValute;
+		this.datumObracuna = datumObracuna;
+		this.ukupnoRobaIUsluga = ukupnoRobaIUsluga;
+		this.ukupanRabat = ukupanRabat;
+		this.ukupanPorez = ukupanPorez;
+		this.osnovica = osnovica;
+		this.ukupanPDV = ukupanPDV;
+		this.iznosZaPlacanje = iznosZaPlacanje;
+		this.uplataNaRacun = uplataNaRacun;
+		this.pozivNaBroj = pozivNaBroj;
+		this.statusFakture = statusFakture;
+		this.preduzece = preduzece;
+		this.poslovnaGodina = poslovnaGodina;
+		this.stavkeFakture = stavkeFakture;
+		this.poslovniPartner = poslovniPartner;
+		this.otpremnica = otpremnica;
+	}
+	
+	public Faktura(){
+		super();
+	}
+	
+	
 	
 	
 	
