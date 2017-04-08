@@ -1,0 +1,155 @@
+#{extends 'standardForm.html' /}
+#{set title:'Cenovnici' /}
+
+
+<script>
+
+
+function sync(item){
+	rbrCenovnika = item.find(".rbrCenovnika").html()
+    datmPrimene = item.find(".datmPrimene").html()
+   	preduzece = item.find(".preduzece").html()
+    id = item.find(".id").html()
+    $("#rbrCenovnika").val(rbrCenovnika);
+    $("#datmPrimene").val(datmPrimene);
+    $("#preduzece").val(preduzece);
+    $("#id").val(id);
+}
+
+
+
+function remove(id){
+	$(location).attr('href', '/Cenovnici/delete?id='+id);
+}
+function stavke(id){
+	$(location).attr('href', '/StCenovnika/showStCenovnika?mode='+id);
+	
+}
+
+
+</script>
+
+
+<p>
+<ul>
+  <li><a href="http://localhost:9000" id="pickup"><img src="@{'/public/images/home.png'}"/></a></li>
+
+  <li><a href="@{Cenovnici.showCenovnici("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{Cenovnici.showCenovnici("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a  id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a  id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a  id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a  id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{Cenovnici.showCenovnici("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+    <li><a href="@{Cenovnici.showCenovnici("copy")}" id = "copy"><img src="@{'/public/images/copy.gif'}"/></a></li>
+    <li><a href="@{Cenovnici.showCenovnici("stavke")}" id = "stavke">Stavke cenovnika</a></li>
+
+  
+</ul>
+</p>
+
+
+
+
+
+
+
+<h1>Cenovnik</h1>
+
+
+
+
+<table>
+	<tr class = "header">
+	   <th>Redni broj cenovnika</th> 
+	   <th>Datum primene</th>
+	   <th>Preduzece</th>
+	</tr>
+#{list items:cenovnici, as:'cenovnik'}
+	<tr>
+		<td class = "rbrCenovnika">${cenovnik.rbrCenovnika}</td>
+		<td class = "datmPrimene">${cenovnik.datmPrimene}</td>
+		<td class = "preduzece">#{if cenovnik.preduzece}${cenovnik.preduzece.naziv}#{/if}</td>
+		
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${cenovnik.id}</td>
+	</tr>
+#{/list}
+</table>
+
+
+
+#{set 'action'}
+
+	#{if mode == 'add'}
+		@{Cenovnici.create()}
+	#{/if}
+	#{elseif mode == 'edit'}
+		 @{Cenovnici.edit()}
+ 	#{/elseif}
+	#{elseif mode == 'stavke'}
+ 		
+ 		@{StCenovnika.stavke()}
+ 	#{/elseif} 	
+ 	#{elseif mode == 'copy'}
+		 @{Cenovnici.copy()}
+ 	#{/elseif}
+ 	#{else}
+ 		@{Cenovnici.filter()}
+	 #{/else}	
+ #{/set}
+
+
+<div class = "panel">
+	<p>
+	
+		<form action=${action} method="post">
+		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'rbrCenovnika'}
+					<label for = "${field.id}">Redni broj cenovnika</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'datmPrimene'}
+					<label for = "${field.id}">Datum primene</label>
+					<input type = "date" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'preduzece'}
+					<label for = "${field.id}">Preduzece</label>
+					
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:preduzeca, as:'preduzece'}
+					<option value = "${preduzece.id}">${preduzece.naziv}</option>
+					#{/list}
+					</select>
+					
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'procenat'}
+					<label id="procenatL" for = "${field.id}">procenat</label>
+					<input type = "number" name = "${field.name}" id = "procenat"/>
+				#{/}
+				
+				</p>
+				
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "#" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>
+	</p>
+</div>

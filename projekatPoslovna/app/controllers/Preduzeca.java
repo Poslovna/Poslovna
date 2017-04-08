@@ -58,5 +58,11 @@ public class Preduzeca extends Controller {
 			
 	}
     
-  
+    public static void filter(String naziv, String adresaPreduzeca, String pib, String telefon, String email, String logo, long mesto){
+    	
+    	List preduzeca = Preduzece.find("byNazivLikeAndAdresaPreduzecaLikeAndPibLikeAndTelefonLikeAndEmailLikeAndLogoLikeAndMesto_idLike", "%" + naziv + "%", "%" + adresaPreduzeca + "%", "%" + pib + "%", "%" + telefon + "%", "%" + email + "%", "%" + logo + "%", mesto).fetch();
+    	String mode = "edit";
+    	renderTemplate("Preduzeca/showPreduzeca.html", preduzeca, mode);
+    	
+    }
 }

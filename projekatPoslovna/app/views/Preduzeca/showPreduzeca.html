@@ -37,10 +37,10 @@ function remove(id){
 
 <p>
 <ul>
+  <li><a href="http://localhost:9000" id="pickup"><img src="@{'/public/images/home.png'}"/></a></li>
+
   <li><a href="@{Preduzeca.showPreduzeca("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
   <li><a href="@{Preduzeca.showPreduzeca("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
-  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
-  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
   <li><a  id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
   <li><a  id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
   <li><a  id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
@@ -57,12 +57,12 @@ function remove(id){
 <table>
 	<tr class = "header">
 	   <th>Naziv</th>
-	   <th>adresaPreduzeca</th> 
-	   <th>pib</th> 
-	   <th>telefon</th> 
-	   <th>email</th> 
-	   <th>logo</th> 
-	   <th>mesto</th>  
+	   <th>Adresa preduzeca</th> 
+	   <th>Pib</th> 
+	   <th>Telefon</th> 
+	   <th>Email</th> 
+	   <th>Logo</th> 
+	   <th>Mesto</th>  
 	   
 	</tr>
 #{list items:preduzeca, as:'preduzece'}
@@ -90,6 +90,9 @@ function remove(id){
         @{Preduzeca.edit()}
     #{/elseif}
     
+    #{else}
+		@{Preduzeca.filter()}
+	#{/else}
  
    
  #{/set}
@@ -109,7 +112,7 @@ function remove(id){
 				
 				<p>
 				#{field 'naziv'}
-					<label for = "${field.id}">naziv</label>
+					<label for = "${field.id}">Naziv</label>
 					<input type = "text" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
@@ -118,31 +121,35 @@ function remove(id){
 				
 				<p>
 				#{field 'adresaPreduzeca'}
-					<label for = "${field.id}">adresaPreduzeca</label>
+					<label for = "${field.id}">Adresa preduzeca</label>
 					<input type = "text" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
+				
 				<p>
 				#{field 'pib'}
-					<label for = "${field.id}">pib</label>
+					<label for = "${field.id}">Pib</label>
 					<input type = "text" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
+				
 				<p>
 				#{field 'telefon'}
-					<label for = "${field.id}">telefon</label>
+					<label for = "${field.id}">Telefon</label>
 					<input type = "text" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
+				
 				<p>
 				#{field 'email'}
-					<label for = "${field.id}">email</label>
+					<label for = "${field.id}">Email</label>
 					<input type = "text" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
+				
 				<p>
 				#{field 'logo'}
-					<label for = "${field.id}">logo</label>
+					<label for = "${field.id}">Logo</label>
 					<input type = "text" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>

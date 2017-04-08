@@ -1,0 +1,140 @@
+#{extends 'standardForm.html' /}
+#{set title:'StCenovnika' /}
+
+
+<script>
+
+
+
+function sync(item){
+	jedinicnaCena = item.find(".jedinicnaCena").html()
+    id = item.find(".id").html()
+    $("#jedinicnaCena").val(jedinicnaCena);
+	
+	$("#id").val(id);
+}
+
+
+
+function remove(id){
+	$(location).attr('href', '/StCenovnika/delete?id='+id);
+}
+
+
+</script>
+
+
+<p>
+<ul>
+  <li><a href="http://localhost:9000" id="pickup"><img src="@{'/public/images/home.png'}"/></a></li>
+
+  <li><a href="@{StCenovnika.showStCenovnika("filter")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{StCenovnika.showStCenovnika("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a  id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a  id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a  id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a  id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{StCenovnika.showStCenovnika("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  
+</ul>
+</p>
+
+
+<h1>Stavke cenovnika</h1>
+<table>
+	<tr class = "header">
+	   <th>Jedinica cena</th>
+	   <th>Roba usluga</th> 
+	   <th>Cenovnik</th> 
+	  
+	   
+	</tr>
+#{list items:stCenovnika, as:'stCenovnik'}
+	<tr>
+		<td class = "jedinicnaCena">${stCenovnik.jedinicnaCena}</td>
+		<td class = "robaUsluga">#{if stCenovnik.robaUsluga}${stCenovnik.robaUsluga.nazivRobeUsluge}#{/if}</td>
+		<td class = "cenovnik">#{if stCenovnik.cenovnik}${stCenovnik.cenovnik.rbrCenovnika}#{/if}</td>
+		
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${stCenovnik.id}</td>
+	</tr>
+#{/list}
+</table>
+
+
+#{set 'action'}
+
+	#{if mode == 'add'}
+		@{StCenovnika.create()}
+	#{/if}
+	
+	#{elseif mode == 'edit'}
+        @{StCenovnika.edit()}
+    #{/elseif}
+    
+    #{else}
+ 		@{StCenovnika.filter()}
+	 #{/else}
+   
+   
+ 
+   
+ #{/set}
+ 
+ 
+ 
+ 
+ 
+ <div class = "panel">
+	<p>
+	
+		<form action=${action} method="post">
+		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+								<p>
+				#{field 'jedinicnaCena'}
+					<label for = "${field.id}">Jedinicna cena</label>
+					<input type = "text" name = "${field.name}"  id = "${field.id}">
+				#{/}
+				</p>
+				
+
+				
+			<p>
+				#{field 'cenovnik'}
+					<label for = "${field.id}">Cenovnik</label>
+					<select name = "${field.name}" />
+					#{list items:cenovnici, as:'cenovnik'}
+					<option value = "${cenovnik.id}">${cenovnik.rbrCenovnika}</option>
+					#{/list}
+					</select>
+					
+				#{/}
+				</p>
+				
+				#{field 'robaUsluga'}
+					<label for = "${field.id}">Roba usluga</label>
+					<select name = "${field.name}" />
+					#{list items:robeUsluga, as:'robaUsluga'}
+					<option value = "${robaUsluga.id}">${robaUsluga.nazivRobeUsluge}</option>
+					#{/list}
+					</select>
+					
+				#{/}
+				</p>
+				
+				
+				
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{StCenovnika.showStCenovnika("")}" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>
+	</p>
+</div>
+ 
