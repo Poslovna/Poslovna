@@ -14,7 +14,9 @@ function sync(item){
     $("#id").val(id);
 }
 
-
+function remove(id){
+	$(location).attr('href', '/GrupeRoba/delete?id='+id);
+}
 
 
 </script>
@@ -22,7 +24,9 @@ function sync(item){
 
 <p>
 <ul>
-  <li><a href="@{GrupeRoba.showGrupeRoba("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="http://localhost:9000" id="pickup"><img src="@{'/public/images/home.png'}"/></a></li>
+
+  <li><a href="@{GrupeRoba.showGrupeRoba("filter")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
   <li><a href="@{GrupeRoba.showGrupeRoba("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
   <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
   <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
@@ -54,7 +58,7 @@ function sync(item){
 
 
 
-<h1>Fakturisanje</h1>
+<h1>Grupe roba</h1>
 
 
 
@@ -65,12 +69,13 @@ function sync(item){
 	   <th>PDV</th>
 	   <th>Preduzece</th>
 	</tr>
-#{list items:GrupeRoba, as:'GrupaRobe'}
+#{list items:grupeRoba, as:'grupaRobe'}
 	<tr>
 		<td class = "nazivGrupe">${grupaRobe.nazivGrupe}</td>
-	
+		<td class = "pdv">#{if grupaRobe.pdv}${grupaRobe.pdv.nazivPDV}#{/if}</td>		
+		<td class = "preduzece">#{if grupaRobe.preduzece}${grupaRobe.preduzece.naziv}#{/if}</td>
 		
-		<td style = "visibility: hidden; max-width: 0px" class = "id">${ObracunatiPorezi.id}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${grupaRobe.id}</td>
 	</tr>
 #{/list}
 </table>
@@ -93,20 +98,20 @@ function sync(item){
 				</p>
 				
 				<p>
-				#{field 'PDV'}
+				#{field 'pdv'}
 					<label for = "${field.id}">PDV</label>
 					<select name = "${field.name}" id = "${field.id}"/>
-					#{list items:PDV, as:'PDV'}
-					<option  value = "${PDV.id}">${PDV.nazivPDV}</option>
+					#{list items:pdvi, as:'pdv'}
+					<option value = "${pdv.id}">${pdv.nazivPDV}</option>
 					#{/list}
 					</select>
-					
-				#{/}
+					#{/}
+				</p>
 				<p>
 				#{field 'preduzece'}
 					<label for = "${field.id}">Preduzece</label>
 					<select name = "${field.name}" id = "${field.id}"/>
-					#{list items:Preduzeca, as:'Preduzece'}
+					#{list items:preduzeca, as:'preduzece'}
 					<option  value = "${preduzece.id}">${preduzece.naziv}</option>
 					#{/list}
 					</select>

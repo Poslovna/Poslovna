@@ -15,36 +15,32 @@ import play.mvc.*;
 public class GrupeRoba extends Controller {
 
     public static void showGrupeRoba(String mode) {
-    	List<Preduzece> preduzece = Preduzece.findAll();
-    	List<PDV> pdv= PDV.findAll();
-    	List<GrupaRobe> grupaRobe = GrupaRobe.findAll();
+    	List<GrupaRobe> grupeRoba = GrupaRobe.findAll();
+    	List<Preduzece> preduzeca = Preduzece.findAll();
+    	List<PDV> pdvi= PDV.findAll();
+
     	if(mode == null || mode.equals(""))
     		mode = "edit";
-        render(preduzece, pdv, grupaRobe, mode);
+        render(grupeRoba,preduzeca, pdvi, mode);
     }
-    public static void create(String nazivGrupe, long id)
+    public static void create(String nazivGrupe, long pdv,long preduzece)
     {
     	
     	GrupaRobe grupaRobe = new GrupaRobe();
 		
     	grupaRobe.nazivGrupe = nazivGrupe;
-    	grupaRobe.pdv = PDV.findById(id);
-    	grupaRobe.preduzece = Preduzece.findById(id);
-    	
-    	
-    	
-    	System.out.println(id);
+    	grupaRobe.pdv = PDV.findById(pdv);
+    	grupaRobe.preduzece = Preduzece.findById(preduzece);
     	grupaRobe.save();
     	showGrupeRoba("add");
     }
     
-    public static void edit(String nazivGrupe, long id){
+    public static void edit(long id,String nazivGrupe, long pdv,long preduzece){
     	
     	GrupaRobe grupaRobe = GrupaRobe.findById(id);
     	grupaRobe.nazivGrupe= nazivGrupe;
-    	grupaRobe.pdv = PDV.findById(id);
-    	grupaRobe.preduzece= Preduzece.findById(id);
-    	
+    	grupaRobe.pdv = PDV.findById(pdv);
+    	grupaRobe.preduzece= Preduzece.findById(preduzece);   	
     	grupaRobe.save();
     	showGrupeRoba("");
     }

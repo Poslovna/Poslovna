@@ -6,29 +6,27 @@
 <script>
 
 
-
 function sync(item){
 	brojOtpremnice = item.find(".brojOtpremnice").html()
-	mestoIzdavanjaRacuna = item.find(".mestoIzdavanjaRacuna").html()
-	datumIzdavanjaRacuna = item.find(".datumIzdavanjaRacuna").html()
-	nacinPlacanja = item.find(".nacinPlacanja").html()
-	rokPlacanja= item.find(".rokPlacanja").html()
-	poslovniPartner = item.find(".poslovniPartner").html()
-	poslovnaGodina = item.find(".poslovnaGodina").html()
+	osnovica= item.find(".osnovica").html()
+	ukupanPDV= item.find(".ukupanPDV").html()
+	iznosZaPlacanje= item.find(".iznosZaPlacanje").html()
+
 	mesto = item.find(".mesto").html()
     id = item.find(".id").html()
     $("#brojOtpremnice").val(brojOtpremnice);
-	$("#mestoIzdavanjaRacuna").val(mestoIzdavanjaRacuna);
-	$("#datumIzdavanjaRacuna").val(datumIzdavanjaRacuna);
-	$("#nacinPlacanja").val(nacinPlacanja);
-	$("#rokPlacanja").val(rokPlacanja);
-	$("#poslovniPartner").val(poslovniPartner);
-	$("#poslovnaGodina").val(poslovnaGodina);
+	$("#osnovica").val(osnovica);
+	$("#ukupanPDV").val(ukupanPDV);
+	$("#iznosZaPlacanje").val(iznosZaPlacanje);
+
     $("#id").val(id);
 }
 
 
-
+function stavke(id){
+	$(location).attr('href', '/StavkeOtpremnica/showStavkeOtpremnica?mode='+id);
+	
+}
 
 
 function remove(id){
@@ -38,7 +36,9 @@ function remove(id){
 
 <p>
 <ul>
-  <li><a href="@{Otpremnice.showOtpremnice("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="http://localhost:9000" id="pickup"><img src="@{'/public/images/home.png'}"/></a></li>
+
+  <li><a href="@{Otpremnice.showOtpremnice("filter")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
   <li><a href="@{Otpremnice.showOtpremnice("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
   <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
   <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
@@ -49,6 +49,7 @@ function remove(id){
   <li><a href="@{Otpremnice.showOtpremnice("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
   <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
   <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  <li><a href="@{Otpremnice.showOtpremnice("stavke")}" id = "stavke">Stavke otpremnica</a></li>
   
 </ul>
 </p>
@@ -57,25 +58,23 @@ function remove(id){
 <h1>Otpremnice</h1>
 <table>
 	<tr class = "header">
-	   <th>brojOtpremnice</th>
-	   <th>mestoIzdavanjaRacuna</th> 
-	   <th>datumIzdavanjaRacuna</th> 
-	   <th>nacinPlacanja</th> 
-	   <th>rokPlacanja</th> 
-	   <th>poslovniPartner</th> 
-	   <th>poslovnaGodina</th>  
+	   <th>Broj otpremnice</th>
+	   <th>Osnovica</th> 
+	   <th>Ukupan PDV</th> 
+	   <th>Iznos za placanje</th> 
+	   <th>Poslovna Godina</th>  
+	   <th>Poslovni Partner</th> 
 	   
 	</tr>
 #{list items:otpremnica, as:'otpremnica'}
 	<tr>
 		<td class = "brojOtpremnice">${otpremnica.brojOtpremnice}</td>
-		<td class = "mestoIzdavanjaRacuna">${otpremnica.mestoIzdavanjaRacuna}</td>
-		<td class = "datumIzdavanjaRacuna">${otpremnica.datumIzdavanjaRacuna}</td>
-		<td class = "nacinPlacanja">${otpremnica.nacinPlacanja}</td>
-		<td class = "rokPlacanja">${otpremnica.rokPlacanja}</td>
-	 <!--  	<td class = "poslovniPartner">#{if otpremnica.poslovniPartner}${otpremnica.poslovniPartner.nazivPartnera}#{/if}</td>
-		<td class = "poslovnaGodina">#{if otpremnica.poslovnaGodina}${otpremnica.poslovnaGodina.godina}#{/if}</td>
-				-->
+		<td class = "osnovica">${otpremnica.osnovica}</td>
+	   	<td class = "ukupanPDV">${otpremnica.ukupanPDV}</td>
+	   	<td class = "iznosZaPlacanje">${otpremnica.iznosZaPlacanje}</td>
+	    <td class = "poslovnaGodina">#{if otpremnica.poslovnaGodina}${otpremnica.poslovnaGodina.godina}#{/if}</td>
+		<td class = "poslovniPartner">#{if otpremnica.poslovniPartner}${otpremnica.poslovniPartner.nazivPartnera}#{/if}</td>
+				
 		<td style = "visibility: hidden; max-width: 0px" class = "id">${otpremnica.id}</td>
 	</tr>
 #{/list}
@@ -90,7 +89,10 @@ function remove(id){
 	#{elseif mode == 'edit'}
         @{Otpremnice.edit()}
     #{/elseif}
-    
+    #{elseif mode == 'stavke'}
+ 		
+ 		@{StavkeOtpremnica.stavke()}
+ 	#{/elseif}
  
    
  #{/set}
@@ -105,65 +107,59 @@ function remove(id){
 		<form action=${action} method="post">
 		
 				#{field 'id'}
-					<input id="pomeranje" type = "hidden" name = "${field.name}" id = "${field.id}"/>
+					<input  type = "hidden" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				
 				<p>
 				#{field 'brojOtpremnice'}
-					<label for = "${field.id}">BrojOtpremnice</label>
-					<input id="pomeranje" type = "text" name = "${field.name}" id = "${field.id}"/>
+					<label for = "${field.id}">Broj Otpremnice</label>
+					<input  type = "text" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
 				
 				
+				<p>
+				#{field 'osnovica'}
+					<label for = "${field.id}">Osnovica</label>
+					<input " type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
 				
 				<p>
-				#{field 'mestoIzdavanjaRacuna'}
-					<label for = "${field.id}">MestoIzdavanjaRacuna</label>
-					<input id="pomeranje" type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{field 'ukupanPDV'}
+					<label for = "${field.id}">Ukupan PDV</label>
+					<input " type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'iznosZaPlacanje'}
+					<label for = "${field.id}">Iznos za placanje</label>
+					<input " type = "text" name = "${field.name}" id = "${field.id}"/>
 				#{/}
 				</p>
 				<p>
-				#{field 'datumIzdavanjaRacuna'}
-					<label for = "${field.id}">DatumIzdavanjaRacuna</label>
-					<input id="pomeranje" type = "date" name = "${field.name}" id = "${field.id}"/>
-				#{/}
-				</p>
-				<p>
-				#{field 'nacinPlacanja'}
-					<label for = "${field.id}">NacinPlacanja</label>
-					<input id="pomeranje" type = "text" name = "${field.name}" id = "${field.id}"/>
-				#{/}
-				</p>
-				<p>
-				#{field 'rokPlacanja'}
-					<label for = "${field.id}">RokPlacanja</label>
-					<input id="pomeranje" type = "text" name = "${field.name}" id = "${field.id}"/>
-				#{/}
-				</p>
-				 <p>
 				#{field 'poslovnaGodina'}
-					<label for = "${field.id}">PoslovnaGodina</label>
-					<select id="pomeranje" name = "${field.name}" id = "${field.id}"/>
-					#{list items:mesta, as:'poslovnaGodina'}
+					<label for = "${field.id}">Poslovna Godina</label>
+					<select name = "${field.name}" />
+					#{list items:poslovnaGodina, as:'poslovnaGodina'}
 					<option value = "${poslovnaGodina.id}">${poslovnaGodina.godina}</option>
 					#{/list}
 					</select>
 					
 				#{/}
 				</p>
-			 <p>
-				#{field 'poslovniPartneri'}
-					<label for = "${field.id}">PoslovniPartner</label>
-					<select id="pomeranje" name = "${field.name}" id = "${field.id}"/>
-					#{list items:mesta, as:'poslovniPartner'}
-					<option  value = "${poslovnaGodina.id}">${poslovniPartner.nazivPartnera}</option>
+				
+				<p>
+				#{field 'poslovniPartner'}
+					<label for = "${field.id}">Poslovni Partneri</label>
+					<select name = "${field.name}" />
+					#{list items:poslovniPartner, as:'poslovniPartner'}
+					<option value = "${poslovniPartner.id}">${poslovniPartner.nazivPartnera}</option>
 					#{/list}
 					</select>
 					
 				#{/}
-				
-				
 				</p>
 				
 				

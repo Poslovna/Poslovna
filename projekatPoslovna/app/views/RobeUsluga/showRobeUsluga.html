@@ -1,0 +1,181 @@
+#{extends 'standardForm.html' /}
+#{set title:'Roba usluga' /}
+
+
+
+<script>
+
+$(document).ready(function(){
+	$("#robeUlugaPickup").click(function(){
+		id = $(".highlighted").find(".id").html();
+		$("select").val(id);
+		$('#robeUlugaModal').modal('toggle');
+// 	$("#otpremnicePickup").click(function(){
+// 		id = $(".highlighted").find(".id").html();
+// 		$("select").val(id);
+// 		$('#otpremniceModal').modal('toggle');
+// 	$("#narudzbePickup").click(function(){
+// 		id = $(".highlighted").find(".id").html();
+// 		$("select").val(id);
+// 		$('#narudzbeModal').modal('toggle');
+// 	});
+});
+
+});
+
+function sync(item){
+	nazivRobeUsluge = item.find(".nazivRobeUsluge").html()
+	jedinicaMere = item.find(".jedinicaMere").html()
+ 	grupaRobe = item.find(".grupaRobe").html()
+ 	otpremnica = item.find(".otpremnica").html()
+ 	narudzba = item.find(".narudzba").html()
+    id = item.find(".id").html()
+    $("#nazivRobeUsluge").val(nazivRobeUsluge);
+	$("#jedinicaMere").val(jedinicaMere);
+ 	$("#grupaRobe").val(grupaRobe);
+ 	$("#otpremnica").val(otpremnica);
+ 	$("#narudzba").val(narudzba);
+    $("#id").val(id);
+}
+
+function remove(id){
+	$(location).attr('href', '/RobeUsluga/delete?id='+id);
+}
+
+
+</script>
+
+<p>
+<ul>
+  <li><a href="http://localhost:9000" id="pickup"><img src="@{'/public/images/home.png'}"/></a></li>
+
+  <li><a href="@{RobeUsluga.showRobeUsluga("filter")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{RobeUsluga.showRobeUsluga("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a  id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a  id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a  id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a  id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{RobeUsluga.showRobeUsluga("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  
+</ul>
+</p>
+
+
+<div class = "container-fluid">
+<h1>Robe usluga</h1>
+<table>
+	<tr class = "header">
+	   <th>Naziv robe usluge</th>
+	   <th>Jedinica mere</th> 
+	   <th>Grupa robe</th> 
+	   <th>Otpremnica</th> 
+	   <th>Narudzba</th>
+	   
+	</tr>
+#{list items:robeUsluga, as:'robaUsluga'}
+	<tr>
+		<td class = "nazivRobeUsluge">${robaUsluga.nazivRobeUsluge}</td>
+		<td class = "jedinicaMere">${robaUsluga.jedinicaMere}</td>
+		<td class = "grupaRobe">#{if robaUsluga.grupaRobe}${robaUsluga.grupaRobe.nazivGrupe}#{/if}</td>
+		<td class = "otpremnica">#{if robaUsluga.otpremnica}${robaUsluga.otpremnica.brojOtpremnice}#{/if}</td>
+		<td class = "narudzba">#{if robaUsluga.narudzba}${robaUsluga.narudzba.brojNarudzbe}#{/if}</td>
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${robaUsluga.id}</td>
+	</tr>
+#{/list}
+</table>
+
+#{set 'action'}
+
+	#{if mode == 'add'}
+		@{RobeUsluga.create()}
+	#{/if}
+	#{elseif mode == 'edit'}
+        @{RobeUsluga.edit()}
+    #{/elseif}
+    #{else mode == 'filter'}
+		@{RobeUsluga.filter()}
+	#{/else}
+ #{/set}
+
+
+
+
+
+<div class = "panel">
+	<p>
+	
+		<form action=${action} method="post">
+		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'nazivRobeUsluge'}
+					<label for = "${field.id}">nazivRobeUsluge</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				
+				
+				<p>
+				#{field 'jedinicaMere'}
+					<label for = "${field.id}">jedinicaMere</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				<p>
+				#{field 'grupaRobe'}
+					<label for = "${field.id}">Grupa robe</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:grupeRobe, as:'grupaRobe'}
+					<option value = "${grupaRobe.id}">${grupaRobe.nazivGrupe}</option>
+					#{/list}
+					</select>
+					
+<!-- 					 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#grupeRobeModal">...	</button> -->
+				#{/}
+				</p>
+				<p>
+				#{field 'otpremnica'}
+					<label for = "${field.id}">Otpremnica</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:otpremnice, as:'otpremnica'}
+					<option value = "${otpremnica.id}">${otpremnica.brojOtpremnice}</option>
+					#{/list}
+					</select>
+					
+<!-- 					 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#otpremniceModal">...	</button> -->
+				#{/}
+				</p>
+				<p>
+				#{field 'narudzba'}
+					<label for = "${field.id}">Narudzba</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:narudzbe, as:'narudzba'}
+					<option value = "${narudzba.id}">${narudzba.brojNarudzbe}</option>
+					#{/list}
+					</select>
+					
+<!-- 					 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#narudzbeModal">...	</button> -->
+				#{/}
+				</p>
+
+				
+				
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{RobeUsluga.showRobeUsluga("")}" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>
+	</p>
+</div>
+
+
+
