@@ -1,0 +1,192 @@
+#{extends 'standardForm.html' /}
+#{set title:'PoslovniPartneri' /}
+
+<script>
+$(document).ready(function(){
+	$("#mestaPickup").click(function(){
+		id = $(".highlighted").find(".id").html();
+		$("select").val(id);
+		$('#mestaModal').modal('toggle');
+	});
+	$("#preduzecaPickup").click(function(){
+		id = $(".highlighted").find(".id").html();
+		$("select").val(id);
+		$('#preduzecaModal').modal('toggle');
+	});
+});
+
+function sync(item){
+	nazivPartnera = item.find(".nazivPartnera").html()
+	adresa = item.find(".adresa").html()
+	vrstaPartnera = item.find(".vrstaPartnera").html()
+	id = item.find(".id").html()
+	$("#nazivPartnera").val(nazivPartnera);
+    $("#adresa").val(adresa);
+    $("#vrstaPartnera").val(vrstaPartnera);
+    $("#id").val(id);
+
+}
+
+function remove(id){
+	$(location).attr('href', '/PoslovniPartneri/delete?id='+id);
+}
+
+</script>
+
+<p>
+<ul>
+  <li><a href="http://localhost:9000" id="pickup"><img src="@{'/public/images/home.png'}"/></a></li>
+
+  <li><a href="@{PoslovniPartneri.showPoslovniPartneri("filter")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{PoslovniPartneri.showPoslovniPartneri("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a  id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a  id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a  id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a  id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{PoslovniPartneri.showPoslovniPartneri("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+</ul>
+</p>
+
+<div class = "container-fluid">
+<h1>Poslovni Partneri</h1>
+
+<table>
+	<tr class = "header">
+	   <th>Naziv partnera</th> 
+	   <th>Adresa</th>
+	   <th>Vrsta partnera</th> 
+	   <th>Mesto</th>
+	   <th>Preduzece</th>
+	   
+	   
+	</tr>
+#{list items:poslovniPartneri, as:'poslovniPartner'}
+	<tr>
+		<td class = "nazivPartnera">${poslovniPartner.nazivPartnera}</td>
+		<td class = "adresa">${poslovniPartner.adresa}</td>
+		<td class = "vrstaPartnera">${poslovniPartner.vrstaPartnera}</td>
+		<td class = "mesto">#{if poslovniPartner.mesto}${poslovniPartner.mesto.nazivMesta}#{/if}</td>
+		<td class = "preduzece">#{if poslovniPartner.preduzece}${poslovniPartner.preduzece.naziv}#{/if}</td>		
+		
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${poslovniPartner.id}</td>
+	</tr>
+#{/list}
+</table>
+
+
+#{set 'action'}
+    #{if mode == 'add'}
+        @{PoslovniPartneri.add()}
+    #{/if}
+    #{elseif mode == 'edit'}
+        @{PoslovniPartneri.edit()}
+    #{/elseif}
+    #{else}
+       @{PoslovniPartneri.search()}
+    #{/else}
+  #{/set}
+  
+<div class = "panel">
+	<p>
+	
+		<form action = "${action}">
+		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'nazivPartnera'}
+					<label for = "${field.id}">Naziv partnera</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'adresa'}
+					<label for = "${field.id}">Adresa partnera</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'vrstaPartnera'}
+					<label for = "${field.id}">Vrsta Partnera</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				
+				
+				<p>
+				#{field 'mesto'}
+					<label for = "${field.id}">Mesto</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:mesta, as:'mesto'}
+					<option value = "${mesto.id}">${mesto.nazivMesta}</option>
+					#{/list}
+					</select>
+					
+<!-- 					 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#otpremniceModal">...	</button> -->
+				#{/}
+				</p>
+				
+				
+				<p>
+				#{field 'preduzece'}
+					<label for = "${field.id}">Preduzece</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:preduzeca, as:'preduzece'}
+					<option value = "${preduzece.id}">${preduzece.naziv}</option>
+					#{/list}
+					</select>
+					
+<!-- 					 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#poslovneGodineModal">...	</button> -->
+				#{/}
+				</p>
+				
+
+				
+			
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{PoslovniPartneri.showPoslovniPartneri("")}" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>
+	</p>
+</div>
+
+<!--  <!-- Modal --> -->
+<!--   <div class="modal fade" id="drzaveModal" role="dialog"> -->
+<!--     <div class="modal-dialog"> -->
+<!--       Modal content -->
+<!--       <div class="modal-content"> -->
+<!--       <div class="modal-header"> -->
+<!--       	DrÃ…Â¾ave -->
+<!--       </div> -->
+<!--       <div class="modal-body"> -->
+<!-- 	    <table style = "padding:2em"> -->
+<!-- 		<tr class = "header"> -->
+<!-- 		   <th>Oznaka</th>  -->
+<!-- 		   <th>Naziv</th> -->
+<!-- 		</tr> -->
+<!-- 		#{list items:drzave, as:'drzava'} -->
+<!-- 		<tr> -->
+<!-- 			<td class = "oznaka">${drzava.oznaka}</td> -->
+<!-- 			<td class = "naziv">${drzava.naziv}</td> -->
+<!-- 			<td style = "visibility: hidden; max-width: 0px" class = "id">${drzava.id}</td> -->
+<!-- 		</tr> -->
+<!-- 		#{/list} -->
+<!-- 		</table> -->
+<!-- 		<div class="modal-footer"> -->
+<!-- 			<input id = "drzavaPickup" type = "button" value = "izbor"/> -->
+<!-- 		</div> -->
+<!-- 		</div> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--    </div> -->
+</div>

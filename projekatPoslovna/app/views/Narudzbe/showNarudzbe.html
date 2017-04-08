@@ -1,0 +1,227 @@
+#{extends 'standardForm.html' /}
+#{set title:'Narudzbe' /}
+
+<script>
+$(document).ready(function(){
+	$("#narudzbaPickup").click(function(){
+		id = $(".highlighted").find(".id").html();
+		$("select").val(id);
+		$('#narudzbeModal').modal('toggle');
+	});
+});
+
+function sync(item){
+	brojNarudzbe = item.find(".brojNarudzbe").html()
+    datumNarudzbe = item.find(".datumNarudzbe").html()
+    sifra = item.find(".sifra").html()
+    kolicina = item.find(".kolicina").html()
+    otpremnica = item.find(".otpremnica").html()
+    poslovnaGodina = item.find(".poslovnaGodina").html()
+    poslovniPartneri = item.find(".poslovniPartneri").html()
+    id = item.find(".id").html()
+    $("#brojNarudzbe").val(brojNarudzbe);
+    $("#datumNarudzbe").val(datumNarudzbe);
+    $("#sifra").val(sifra);
+    $("#kolicina").val(kolicina);
+    $("#otpremnica").val(otpremnica);
+    $("#poslovnaGodina").val(poslovnaGodina);
+    $("#poslovniPartneri").val(poslovniPartneri);
+    $("#id").val(id);
+}
+function stavke(id){
+	$(location).attr('href', '/StavkeNarudzbenica/showStavkeNarudzbenica?mode='+id);
+	
+}
+function remove(id){
+	$(location).attr('href', '/Narudzbe/delete?id='+id);
+}
+</script>
+
+<p>
+<ul>
+  <li><a href="http://localhost:9000" id="pickup"><img src="@{'/public/images/home.png'}"/></a></li>
+
+  <li><a href="@{Narudzbe.showNarudzbe("search")}" id = "search"><img src="@{'/public/images/search.gif'}"/></a></li>
+  <li><a href="@{Narudzbe.showNarudzbe("refresh")}" id = "refresh"><img src="@{'/public/images/refresh.gif'}"/></a></li>
+  <li><a href="#" id = "pickup"><img src="@{'/public/images/zoom-pickup.gif'}"/></a></li>
+  <li><a href="#" id = "help"><img src="@{'/public/images/help.gif'}"/></a></li>
+  <li><a  id = "first"><img src="@{'/public/images/first.gif'}"/></a></li>
+  <li><a  id = "prev"><img src="@{'/public/images/prev.gif'}"/></a></li>
+  <li><a  id = "next"><img src="@{'/public/images/next.gif'}"/></a></li>
+  <li><a  id = "last"><img src="@{'/public/images/last.gif'}"/></a></li>
+  <li><a href="@{Narudzbe.showNarudzbe("add")}" id = "add"><img src="@{'/public/images/add.gif'}"/></a></li>
+  <li><a href="#" id = "remove"><img src="@{'/public/images/remove.gif'}"/></a></li>
+  <li><a href="#" id = "nextform"><img src="@{'/public/images/nextform.gif'}"/></a></li>
+  <li><a href="@{Narudzbe.showNarudzbe("generate")}" id = "generate">Generisanje fakture</a></li>
+  <li><a href="@{Narudzbe.showNarudzbe("stavke")}" id = "stavke">Stavke narudzbenice</a></li>
+	
+</ul>
+</p>
+
+<div class = "container-fluid">
+<h1>Narudzbe</h1>
+
+<table>
+	<tr class = "header">
+	   <th>Broj narudzbe</th> 
+	   <th>Datum narudzbe</th>
+	   <th>Sifra</th> 
+	   <th>Kolicina</th>
+	   <th>Otpremnica</th>
+	   <th>Poslovna godina</th> 
+	   <th>Poslovni partner</th>
+	   
+	</tr>
+#{list items:narudzbe, as:'narudzba'}
+	<tr>
+		<td class = "brojNarudzbe">${narudzba.brojNarudzbe}</td>
+		<td class = "datumNarudzbe">${narudzba.datumNarudzbe}</td>
+		<td class = "sifra">${narudzba.sifra}</td>
+		<td class = "kolicina">${narudzba.kolicina}</td>
+		<td class = "otpremnica">#{if narudzba.otpremnica}${narudzba.otpremnica.brojOtpremnice}#{/if}</td>		
+		<td class = "poslovnaGodina">#{if narudzba.poslovnaGodina}${narudzba.poslovnaGodina.godina}#{/if}</td>
+		<td class = "poslovniPartner">#{if narudzba.poslovniPartner}${narudzba.poslovniPartner.nazivPartnera}#{/if}</td>		
+		
+		<td style = "visibility: hidden; max-width: 0px" class = "id">${narudzba.id}</td>
+	</tr>
+#{/list}
+</table>
+
+
+#{set 'action'}
+    #{if mode == 'add'}
+        @{Narudzbe.add()}
+    #{/if}
+    #{elseif mode == 'edit'}
+        @{Narudzbe.edit()}
+    #{/elseif}
+    #{elseif mode == 'stavke'}
+        @{StavkeNarudzbenica.stavke()}
+    #{/elseif}
+    #{elseif mode == 'generate'}
+        @{Narudzbe.generate()}
+    #{/elseif}
+    #{else}
+       @{Narudzbe.search()}
+    #{/else}
+  #{/set}
+  
+<div class = "panel">
+	<p>
+	
+		<form action = "${action}">
+		
+				#{field 'id'}
+					<input type = "hidden" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				
+				<p>
+				#{field 'brojNarudzbe'}
+					<label for = "${field.id}">Broj narudzbe</label>
+					<input type = "text" name = "${field.name}" id = "${field.id}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'datumNarudzbe'}
+					<label for = "${field.id}">Datum narudzbe</label>
+					<input type = "date" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'sifra'}
+					<label for = "${field.id}">Sifra</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'kolicina'}
+					<label for = "${field.id}">Kolicina</label>
+					<input type = "text" name = "${field.name}" id = "${field.name}"/>
+				#{/}
+				</p>
+				
+				
+				
+				<p>
+				#{field 'otpremnica'}
+					<label for = "${field.id}">Otpremnica</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:otpremnice, as:'otpremnica'}
+					<option value = "${otpremnica.id}">${otpremnica.brojOtpremnice}</option>
+					#{/list}
+					</select>
+					
+<!-- 					 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#otpremniceModal">...	</button> -->
+				#{/}
+				</p>
+				
+				
+				<p>
+				#{field 'poslovnaGodina'}
+					<label for = "${field.id}">Poslovna godina</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:poslovneGodine, as:'poslovnaGodina'}
+					<option value = "${poslovnaGodina.id}">${poslovnaGodina.godina}</option>
+					#{/list}
+					</select>
+					
+<!-- 					 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#poslovneGodineModal">...	</button> -->
+				#{/}
+				</p>
+				
+				<p>
+				#{field 'poslovniPartner'}
+					<label for = "${field.id}">Poslovni partneri</label>
+					<select name = "${field.name}" id = "${field.id}"/>
+					#{list items:poslovniPartneri, as:'poslovniPartner'}
+					<option value = "${poslovniPartner.id}">${poslovniPartner.nazivPartnera}</option>
+					#{/list}
+					</select>
+					
+<!-- 					 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#poslovniPartneriModal">...	</button> -->
+				#{/}
+				</p>
+				
+			
+				<div id = "formActions">
+					<input type = "submit" value = "Potvrda" style="margin-left:6em"/>
+					<a href = "@{Narudzbe.showNarudzbe("")}" style="margin-left:1em">Rollback</a>
+				</div>			
+				
+		</form>
+	</p>
+</div>
+
+<!--  <!-- Modal --> -->
+<!--   <div class="modal fade" id="drzaveModal" role="dialog"> -->
+<!--     <div class="modal-dialog"> -->
+<!--       Modal content -->
+<!--       <div class="modal-content"> -->
+<!--       <div class="modal-header"> -->
+<!--       	DrÅ¾ave -->
+<!--       </div> -->
+<!--       <div class="modal-body"> -->
+<!-- 	    <table style = "padding:2em"> -->
+<!-- 		<tr class = "header"> -->
+<!-- 		   <th>Oznaka</th>  -->
+<!-- 		   <th>Naziv</th> -->
+<!-- 		</tr> -->
+<!-- 		#{list items:drzave, as:'drzava'} -->
+<!-- 		<tr> -->
+<!-- 			<td class = "oznaka">${drzava.oznaka}</td> -->
+<!-- 			<td class = "naziv">${drzava.naziv}</td> -->
+<!-- 			<td style = "visibility: hidden; max-width: 0px" class = "id">${drzava.id}</td> -->
+<!-- 		</tr> -->
+<!-- 		#{/list} -->
+<!-- 		</table> -->
+<!-- 		<div class="modal-footer"> -->
+<!-- 			<input id = "drzavaPickup" type = "button" value = "izbor"/> -->
+<!-- 		</div> -->
+<!-- 		</div> -->
+<!--       </div> -->
+<!--     </div> -->
+<!--    </div> -->
+</div>
